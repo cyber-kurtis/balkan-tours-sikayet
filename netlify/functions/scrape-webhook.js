@@ -312,8 +312,8 @@ export async function handler(event, context) {
     return { statusCode: 200, headers, body: '' };
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+  const supabaseUrl = process.env.SUPABASE_URL || "https://ordbhropgcgihlxjwgck.supabase.co";
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZGJocm9wZ2NnaWhseGp3Z2NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMTE1NTMsImV4cCI6MjA5Njc4NzU1M30.9NkzQ_b8weuqybC50Tcdzpg8aGjFMTr9fpd3SXqUHuA";
   const isDryRun = !supabaseUrl || !supabaseKey;
 
   if (isDryRun) {
