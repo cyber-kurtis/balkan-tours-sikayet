@@ -1,5 +1,14 @@
 -- SQL Script to initialize the PostgreSQL database inside Supabase
 
+-- NOTE: If your database is already running, run the following ALTER TABLE queries 
+-- in your Supabase SQL Editor to update your existing table structure:
+-- 
+-- ALTER TABLE balkan_sikayetleri ADD COLUMN IF NOT EXISTS sikayetci_adi TEXT;
+-- ALTER TABLE balkan_sikayetleri ADD COLUMN IF NOT EXISTS acenta_adi TEXT;
+-- ALTER TABLE balkan_sikayetleri ADD COLUMN IF NOT EXISTS tur_adi TEXT;
+-- ALTER TABLE balkan_sikayetleri ADD COLUMN IF NOT EXISTS tur_tarihi TEXT;
+-- ALTER TABLE balkan_sikayetleri ADD COLUMN IF NOT EXISTS sikayet_url TEXT;
+
 -- Create balkan_sikayetleri table
 CREATE TABLE IF NOT EXISTS balkan_sikayetleri (
     id BIGSERIAL PRIMARY KEY,
@@ -12,6 +21,11 @@ CREATE TABLE IF NOT EXISTS balkan_sikayetleri (
     ai_kategori TEXT CHECK (ai_kategori IN ('Ulaşım', 'Rehber', 'Otel', 'Program Kayması', 'Alakasız')),
     ai_duygu_skoru TEXT CHECK (ai_duygu_skoru IN ('Kritik', 'Orta', 'Düşük')),
     durum TEXT DEFAULT 'Aktif' CHECK (durum IN ('Aktif', 'Arşiv')),
+    sikayetci_adi TEXT,
+    acenta_adi TEXT,
+    tur_adi TEXT,
+    tur_tarihi TEXT,
+    sikayet_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -22,8 +36,6 @@ CREATE INDEX IF NOT EXISTS idx_balkan_sikayetleri_durum ON balkan_sikayetleri(du
 CREATE INDEX IF NOT EXISTS idx_balkan_sikayetleri_tarih ON balkan_sikayetleri(tarih);
 
 -- Enable Row Level Security (RLS) if needed, or create policies
--- For simplicity and full dashboard operations, we allow public read & write, 
--- but in production you should lock it down to authenticated users.
 ALTER TABLE balkan_sikayetleri ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access

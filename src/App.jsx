@@ -17,99 +17,127 @@ import {
   X, 
   FileText,
   AlertCircle,
-  HelpCircle
+  User,
+  Building2,
+  ExternalLink,
+  Compass,
+  ArrowRight,
+  Globe
 } from 'lucide-react';
 
-// Default mock complaints database for instant interactive trial
+// Enhanced mock complaints database
 const INITIAL_DEMO_DATA = [
   {
     id: 1,
     sikayet_id: "sikayetvar-001",
     tarih: new Date().toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Otobüsün bozulması ve 6 saat sınırda bekletilme",
-    icerik: "Büyük Balkan Turu kapsamında otobüslü seyahat ettik. Ancak otobüs daha Belgrad yakınlarında arıza yaptı. Klima çalışmadan 40 derece sıcakta saatlerce bekledik. Ayrıca sınır kapılarında (Kotor ve Budva geçişlerinde) organizasyon hatasından dolayı 6 saat bekletildik. Ulaşım yönetimi sıfır.",
+    baslik: "Ustour Rehber Rezaleti ve Program Kayması",
+    icerik: "Büyük Balkan Turu kapsamında Üsküp ve Saraybosna gezisi yapacaktık. Ancak rehberimiz son derece tecrübesizdi. Mostar Köprüsü'ne gitmek yerine saatlerce otobüste bekledik. Program kayması yüzünden Blagaj Tekkesi'ni hiç göremedik.",
     anahtar_kelime: "Balkan Turu, Belgrad, Kotor, Budva, Ulaşım",
-    ai_kategori: "Ulaşım",
+    ai_kategori: "Rehber",
     ai_duygu_skoru: "Kritik",
+    sikayetci_adi: "Kaan K.",
+    acenta_adi: "Ustour",
+    tur_adi: "Büyük Balkan Turu",
+    tur_tarihi: "15-22 Haziran 2026",
+    sikayet_url: "https://www.sikayetvar.com/ustour/ustour-rehber-rezaleti-ve-program-kaymasi",
     durum: "Aktif"
   },
   {
     id: 2,
     sikayet_id: "sikayetvar-002",
-    tarih: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    tarih: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Üsküp ve Ohrid rehberinin ilgisiz tavırları",
-    icerik: "Üsküp ve Ohrid turlarımıza rehberlik eden kişi son derece kaba ve ilgisizdi. Şehir tarihi hakkında iki cümle edip bizi alışveriş yapmamız için anlaşmalı dükkanlara bıraktı. Tetovo (Kalkandelen) gezisini ise tamamen iptal etti, program kayması yaşandı.",
+    baslik: "Jolly Tur Kotor'da Rezil Otel Deneyimi",
+    icerik: "Budva ve Kotor turlarını içeren 12-19 Haziran Balkan Turu'na katıldık. Kalacağımız otel Kotor'da çok eski ve pisti. Klimalar çalışmıyordu, sıcak su akmıyordu. Tur rehberi hiçbir şekilde yardımcı olmadı.",
     anahtar_kelime: "Üsküp, Ohrid, Tetovo, Balkan Rehberi",
-    ai_kategori: "Rehber",
-    ai_duygu_skoru: "Orta",
+    ai_kategori: "Otel",
+    ai_duygu_skoru: "Kritik",
+    sikayetci_adi: "Ayşe T.",
+    acenta_adi: "Jolly Tur",
+    tur_adi: "Klasik Balkan Turu",
+    tur_tarihi: "12-19 Haziran 2026",
+    sikayet_url: "https://www.sikayetvar.com/jolly-tur/jolly-tur-kotorda-rezil-otel-deneyimi",
     durum: "Aktif"
   },
   {
     id: 3,
     sikayet_id: "sikayetvar-003",
-    tarih: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Şikayetim Var",
-    baslik: "Mostar ve Blagaj'da Otel Pisliği",
-    icerik: "Mostar Köprüsü gezisinden sonra yerleştiğimiz otel tam bir felaketti. Saraybosna yakınlarında olduğu söylenen otel pislik içindeydi. Çarşaflar değiştirilmemişti, oda kokuyordu. Blagaj gezimizi de yorgunluktan yapamadık.",
+    tarih: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    kaynak_site: "Tatil Forumu",
+    baslik: "Tatilbudur Otobüslü Balkan Turu Ulaşım Sıkıntısı",
+    icerik: "Tatilbudur ile katıldığımız Mayıs ayındaki Otobüslü Balkan Turu ile Belgrad ve Novi Sad'a gittik. Otobüs yolda 2 kere arıza yaptı, saatlerce sınır kapılarında bekletildik. Ulaşım planlaması çok kötüydü.",
     anahtar_kelime: "Mostar, Saraybosna, Blagaj, Otel",
-    ai_kategori: "Otel",
-    ai_duygu_skoru: "Kritik",
+    ai_kategori: "Ulaşım",
+    ai_duygu_skoru: "Orta",
+    sikayetci_adi: "Mustafa B.",
+    acenta_adi: "Tatilbudur",
+    tur_adi: "Otobüslü Balkan Turu",
+    tur_tarihi: "18-25 Mayıs 2026",
+    sikayet_url: "https://www.tatilforum.com/tatilbudur/otobuslu-balkan-turu-ulasim-sikintisi",
     durum: "Aktif"
   },
   {
     id: 4,
     sikayet_id: "sikayetvar-004",
-    tarih: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Google",
-    baslik: "Novi Sad programında saat kayması",
-    icerik: "Sırbistan Novi Sad ve Niş gezilerimizin süreleri çok kısa tutuldu. Ulaşım planlaması yanlış yapıldığı için program kayması oldu ve kale ziyaretini karanlıkta yapmak zorunda kaldık.",
+    tarih: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    kaynak_site: "Google Reviews",
+    baslik: "Prontotour Tiran ve Prizren Gezisi - Rehber Yetersizliği",
+    icerik: "Prontotour ile Kurban Bayramı Balkan Turu'na katıldık. Arnavutluk Tiran ve Kosova Prizren rehberi ülkeyi hiç tanımıyordu. Bizi sadece anlaşmalı olduğu dükkanlara götürdü, tarihi yerleri anlatmadı.",
     anahtar_kelime: "Novi Sad, Nis, Program Kayması",
-    ai_kategori: "Program Kayması",
+    ai_kategori: "Rehber",
     ai_duygu_skoru: "Orta",
+    sikayetci_adi: "Zeynep Y.",
+    acenta_adi: "Prontotour",
+    tur_adi: "Kurban Bayramı Balkan Turu",
+    tur_tarihi: "16-23 Haziran 2026",
+    sikayet_url: "https://www.google.com/maps/contrib/prontotour-reviews",
     durum: "Aktif"
   },
   {
     id: 5,
     sikayet_id: "forum-012",
     tarih: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Tatil Forumu",
-    baslik: "Tiran otelinde akşam yemeği verilmemesi",
-    icerik: "Arnavutluk Tiran'daki otelde akşam yemeği tura dahil olmasına rağmen verilmedi. Durumu sorduğumuzda ise rehber geç kaldığımızı söyledi. Durres ve Elbasan gezileri de aceleye getirildi.",
+    kaynak_site: "Sikayetvar",
+    baslik: "Gezinomi Eski Tarihli Otel Şikayeti",
+    icerik: "Ohrid gölü kenarında otel diye bizi 5-12 Nisan tarihindeki turda çok uzak bir pansiyona yerleştirdiler. Bu balkan turu firması tam bir hayal kırıklığı.",
     anahtar_kelime: "Tiran, Durres, Elbasan, Otel",
     ai_kategori: "Otel",
     ai_duygu_skoru: "Kritik",
-    durum: "Arşiv" // Archived because it is > 10 days old
+    sikayetci_adi: "Mehmet A.",
+    acenta_adi: "Gezinomi",
+    tur_adi: "Ekspres Balkan Turu",
+    tur_tarihi: "5-12 Nisan 2026",
+    sikayet_url: "https://www.sikayetvar.com/gezinomi/gezinomi-eski-tarihli-otel-sikayeti",
+    durum: "Arşiv"
   },
   {
     id: 6,
     sikayet_id: "google-099",
     tarih: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Google Reviews",
-    baslik: "Prizren gezisinde kaybolan eşyalar",
-    icerik: "Kosova Prizren ve Priştine turunda bagajımız otobüsten indirilirken zarar gördü. Firma hasarı karşılamadı.",
-    anahtar_kelime: "Prizren, Prishtina, Ulaşım",
-    ai_kategori: "Ulaşım",
-    ai_duygu_skoru: "Düşük",
-    durum: "Arşiv" // Archived because it is > 10 days old
-  },
-  {
-    id: 7,
-    sikayet_id: "sikayetvar-007",
-    tarih: new Date().toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Firma çok ilgisizdi",
-    icerik: "Balkan turları satan bu acenteden bir daha asla bilet almam. Müşteri temsilcisi telefonlarımızı açmadı.",
-    anahtar_kelime: "Balkan Turu, Alakasız",
+    baslik: "Gruppal Yemeklerin Kalitesizliği",
+    icerik: "Gruppal ile Nisan sonu Saraybosna ve Belgrad gezisinde anlaşmalı restoranlarda verilen yemekler çok kötüydü. Sürekli köfte yemekten bıktık.",
+    anahtar_kelime: "Prizren, Prishtina, Ulaşım",
     ai_kategori: "Alakasız",
     ai_duygu_skoru: "Düşük",
-    durum: "Aktif"
+    sikayetci_adi: "Ebru G.",
+    acenta_adi: "Gruppal",
+    tur_adi: "Butik Balkan Turu",
+    tur_tarihi: "20-27 Nisan 2026",
+    sikayet_url: "https://www.sikayetvar.com/gruppal/gruppal-yemeklerin-kalitesizligi",
+    durum: "Arşiv"
   }
 ];
 
 export default function App() {
-  // Try to load initial config from LocalStorage or env
+  // Splash Screen Intro States
+  const [showSplash, setShowSplash] = useState(true);
+  const [splashFade, setSplashFade] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Supabase & Webhook settings
   const [supabaseUrl, setSupabaseUrl] = useState(() => localStorage.getItem('SB_URL') || import.meta.env.VITE_SUPABASE_URL || '');
   const [supabaseKey, setSupabaseKey] = useState(() => localStorage.getItem('SB_KEY') || import.meta.env.VITE_SUPABASE_ANON_KEY || '');
   const [webhookUrl, setWebhookUrl] = useState(() => localStorage.getItem('WEBHOOK_URL') || import.meta.env.VITE_WEBHOOK_URL || '/.netlify/functions/scrape-webhook');
@@ -118,12 +146,32 @@ export default function App() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState('Aktif'); // 'Aktif' = Son 10 Gün, 'Arşiv' = Arşiv Dosyası
+  const [activeTab, setActiveTab] = useState('Aktif'); 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Hepsi');
   const [selectedSentiment, setSelectedSentiment] = useState('Hepsi');
+  const [selectedAgency, setSelectedAgency] = useState('Hepsi');
   const [realtimeConnected, setRealtimeConnected] = useState(false);
   const [errorStatus, setErrorStatus] = useState(null);
+
+  // Splash Screen loading simulation
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            setSplashFade(true);
+            setTimeout(() => setShowSplash(false), 600); // Wait for fade-out transition
+          }, 400);
+          return 100;
+        }
+        const diff = Math.random() * 15;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 100);
+    return () => clearInterval(timer);
+  }, []);
 
   // Initialize Supabase Client
   const supabase = useMemo(() => {
@@ -156,7 +204,6 @@ export default function App() {
         }
 
         setComplaints(data || []);
-        setErrorStatus(null);
       } catch (err) {
         console.error("Database fetch failed. Falling back to Demo Mode:", err.message);
         setErrorStatus("Supabase bağlantısı kurulamadı. Demo verileri gösteriliyor.");
@@ -170,39 +217,36 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [supabase]);
+    if (!showSplash) {
+      fetchData();
+    }
+  }, [supabase, showSplash]);
 
   // Real-time listener registration
   useEffect(() => {
-    if (!supabase) {
+    if (!supabase || showSplash) {
       setRealtimeConnected(false);
       return;
     }
 
-    console.log("Setting up Supabase Realtime...");
     const channel = supabase
       .channel('schema-db-changes')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'balkan_sikayetleri' },
         (payload) => {
-          console.log('Realtime DB Change detected:', payload);
+          console.log('Realtime DB Change:', payload);
           fetchData();
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setRealtimeConnected(true);
-        } else {
-          setRealtimeConnected(false);
-        }
+        setRealtimeConnected(status === 'SUBSCRIBED');
       });
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
+  }, [supabase, showSplash]);
 
   // Save config
   const handleSaveConfig = (e) => {
@@ -233,7 +277,6 @@ export default function App() {
 
     if (supabase && webhookUrl) {
       try {
-        console.log(`Triggering webhook: ${webhookUrl}`);
         const response = await fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
@@ -242,25 +285,19 @@ export default function App() {
         if (!response.ok) {
           throw new Error(`Webhook responded with status ${response.status}`);
         }
-        
-        console.log("Webhook triggered. Reloading data in 5 seconds...");
       } catch (err) {
         console.error("Webhook trigger failed:", err.message);
         setErrorStatus(`Yenileme isteği başarısız oldu: ${err.message}. Simüle edilmiş yenileme yapılıyor.`);
-        
-        // Simulating mock addition on failure
         setTimeout(() => {
           simulateNewScrapedData();
         }, 1500);
       }
     } else {
-      console.log("Simulating scrape webhook in Demo Mode...");
       setTimeout(() => {
         simulateNewScrapedData();
       }, 1500);
     }
 
-    // Cooldown logic: re-fetch from database after 5 seconds as specified
     setTimeout(async () => {
       await fetchData();
       setRefreshing(false);
@@ -275,58 +312,75 @@ export default function App() {
         sikayet_id: `mock-${Date.now()}`,
         tarih: new Date().toISOString(),
         kaynak_site: "Sikayetvar",
-        baslik: "Üsküp ve Saraybosna otobüs kliması bozuk",
-        icerik: "Balkan turumuz sırasında otobüsteki klimalar bozuldu. Rehbere söylediğimizde yapacak bir şey yok dedi. Saraybosna'ya kadar sıcaktan bunaldık.",
+        baslik: "Jolly Tur otobüs kliması bozuk",
+        icerik: "Balkan turumuz sırasında otobüsteki klimalar bozuldu. Rehbere söylediğimizde yapacak bir şey yok dedi. 14-21 Haziran turlu seyahatimizde sıcaktan mahvolduk.",
         anahtar_kelime: "Balkan Turu, Üsküp, Saraybosna, Ulaşım",
         ai_kategori: "Ulaşım",
         ai_duygu_skoru: "Kritik",
+        sikayetci_adi: "Hakan Y.",
+        acenta_adi: "Jolly Tur",
+        tur_adi: "Otobüslü Balkan Turu",
+        tur_tarihi: "14-21 Haziran 2026",
+        sikayet_url: "https://www.sikayetvar.com/jolly-tur/jolly-tur-otobus-klimasi-bozuk",
         durum: "Aktif"
       },
       {
         id: Date.now() + 1,
         sikayet_id: `mock-${Date.now() + 1}`,
         tarih: new Date().toISOString(),
-        kaynak_site: "Ekşi Sözlük",
-        baslik: "Balkan tur rehberi rezaleti",
-        icerik: "Tiran ve Prizren rehberinin yetersizliği yüzünden tüm günümüz boşa gitti. Sürekli yanlış yollara girdi ve otel konaklamasında oda kartlarımızı kaybetti.",
+        kaynak_site: "Sikayetvar",
+        baslik: "Ustour Prizren gezisinde rehber gecikmesi",
+        icerik: "Kosova Prizren rehberinin yetersizliği yüzünden Kurban Bayramı turunda 3 saat otobüsün içinde bekledik.",
         anahtar_kelime: "Tiran, Prizren, Balkan Rehberi",
         ai_kategori: "Rehber",
         ai_duygu_skoru: "Orta",
+        sikayetci_adi: "Deniz S.",
+        acenta_adi: "Ustour",
+        tur_adi: "Kurban Bayramı Balkan Turu",
+        tur_tarihi: "16-23 Haziran 2026",
+        sikayet_url: "https://www.sikayetvar.com/ustour/ustour-prizren-gezisinde-rehber-gecikmesi",
         durum: "Aktif"
       }
     ];
 
     setComplaints(prev => {
-      // Filter out duplicates
       const filteredPrev = prev.filter(p => !randomComplaints.some(r => r.sikayet_id === p.sikayet_id));
       return [...randomComplaints, ...filteredPrev];
     });
   };
 
-  // Filter complaints based on Tab, Search, Category and Sentiment
+  // Extract unique agencies from complaints list for filters
+  const uniqueAgencies = useMemo(() => {
+    const list = new Set();
+    complaints.forEach(c => {
+      if (c.acenta_adi && c.acenta_adi !== 'Belirtilmemiş') {
+        list.add(c.acenta_adi);
+      }
+    });
+    return Array.from(list);
+  }, [complaints]);
+
+  // Filter complaints based on Tab, Search, Category, Sentiment and Agency
   const filteredComplaints = useMemo(() => {
     return complaints.filter(comp => {
-      // 1. Tab Status Check
       if (comp.durum !== activeTab) return false;
-
-      // 2. Category Filter
       if (selectedCategory !== 'Hepsi' && comp.ai_kategori !== selectedCategory) return false;
-
-      // 3. Sentiment Filter
       if (selectedSentiment !== 'Hepsi' && comp.ai_duygu_skoru !== selectedSentiment) return false;
+      if (selectedAgency !== 'Hepsi' && comp.acenta_adi !== selectedAgency) return false;
 
-      // 4. Search Query Check
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchesTitle = comp.baslik.toLowerCase().includes(query);
         const matchesContent = comp.icerik.toLowerCase().includes(query);
         const matchesKeywords = comp.anahtar_kelime?.toLowerCase().includes(query);
-        return matchesTitle || matchesContent || matchesKeywords;
+        const matchesComplainant = comp.sikayetci_adi?.toLowerCase().includes(query);
+        const matchesAgency = comp.acenta_adi?.toLowerCase().includes(query);
+        return matchesTitle || matchesContent || matchesKeywords || matchesComplainant || matchesAgency;
       }
 
       return true;
     });
-  }, [complaints, activeTab, selectedCategory, selectedSentiment, searchQuery]);
+  }, [complaints, activeTab, selectedCategory, selectedSentiment, selectedAgency, searchQuery]);
 
   // Compute Statistics for Current View
   const stats = useMemo(() => {
@@ -379,7 +433,7 @@ export default function App() {
     };
   }, [complaints, activeTab]);
 
-  // Donut Chart Config (ApexCharts)
+  // Donut Chart Config (ApexCharts - Styled for Light Mode)
   const chartData = useMemo(() => {
     const categories = ['Ulaşım', 'Rehber', 'Otel', 'Program Kayması', 'Alakasız'];
     const activeItems = complaints.filter(c => c.durum === activeTab);
@@ -388,28 +442,27 @@ export default function App() {
       return activeItems.filter(c => c.ai_kategori === cat).length;
     });
 
-    // Check if we have any data to show
     const totalDataPoints = series.reduce((a, b) => a + b, 0);
 
     const options = {
       chart: {
         type: 'donut',
         background: 'transparent',
-        foreColor: '#a1a1aa'
+        foreColor: '#64748b' // Slate 500
       },
       labels: categories,
-      colors: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#6b7280'], // Blue, Purple, Green, Amber, Gray
+      colors: ['#4f46e5', '#8b5cf6', '#10b981', '#f59e0b', '#94a3b8'], // Indigo, Purple, Emerald, Amber, Slate
       stroke: {
         show: true,
-        colors: ['#18181b'], // darkCard color
-        width: 2
+        colors: ['#ffffff'],
+        width: 3
       },
       legend: {
         position: 'bottom',
         fontSize: '13px',
         fontFamily: 'Outfit, sans-serif',
         labels: {
-          colors: '#d4d4d8'
+          colors: '#475569' // Slate 600
         },
         markers: {
           radius: 12
@@ -421,6 +474,7 @@ export default function App() {
           fontSize: '11px',
           fontFamily: 'Outfit, sans-serif',
           fontWeight: 'bold',
+          colors: ['#ffffff']
         },
         dropShadow: {
           enabled: false
@@ -429,7 +483,7 @@ export default function App() {
       plotOptions: {
         pie: {
           donut: {
-            size: '70%',
+            size: '72%',
             background: 'transparent',
             labels: {
               show: true,
@@ -437,15 +491,15 @@ export default function App() {
                 show: true,
                 fontSize: '14px',
                 fontFamily: 'Outfit, sans-serif',
-                color: '#71717a',
+                color: '#64748b', // Slate 500
                 offsetY: -5
               },
               value: {
                 show: true,
-                fontSize: '20px',
+                fontSize: '22px',
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 'bold',
-                color: '#f4f4f5',
+                fontWeight: '800',
+                color: '#1e293b', // Slate 800
                 offsetY: 5,
                 formatter: function (val) {
                   return val;
@@ -454,7 +508,7 @@ export default function App() {
               total: {
                 show: true,
                 label: 'Toplam',
-                color: '#71717a',
+                color: '#64748b',
                 fontSize: '13px',
                 fontFamily: 'Outfit, sans-serif',
                 formatter: function (w) {
@@ -466,7 +520,7 @@ export default function App() {
         }
       },
       tooltip: {
-        theme: 'dark',
+        theme: 'light',
         style: {
           fontSize: '12px',
           fontFamily: 'Outfit, sans-serif'
@@ -478,45 +532,78 @@ export default function App() {
   }, [complaints, activeTab]);
 
   return (
-    <div className="min-h-screen bg-darkBg text-zinc-100 flex flex-col antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans antialiased relative selection:bg-indigo-100 selection:text-indigo-900">
+      
+      {/* Premium Opening Animation (Splash Screen) */}
+      {showSplash && (
+        <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-white transition-all duration-500 ease-in-out ${splashFade ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100'}`}>
+          <div className="flex flex-col items-center gap-6 max-w-sm px-8 text-center">
+            {/* Spinning Custom Animated Logo */}
+            <div className="relative w-24 h-24 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border-4 border-slate-100 animate-pulse"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-t-indigo-600 border-r-transparent border-b-transparent border-l-transparent animate-spin duration-1000"></div>
+              <Compass className="w-10 h-10 text-indigo-600 animate-bounce" />
+            </div>
+
+            <div className="space-y-2">
+              <h2 className="text-3xl font-extrabold tracking-wider font-sans text-slate-850">
+                BALKAN TOURS
+              </h2>
+              <p className="text-sm text-slate-500 font-medium uppercase tracking-widest">
+                Şikayet İş Zekası Portalı
+              </p>
+            </div>
+
+            {/* Custom Premium Loading bar */}
+            <div className="w-48 h-1 bg-slate-100 rounded-full overflow-hidden mt-2">
+              <div 
+                className="h-full bg-gradient-to-r from-indigo-500 to-violet-600 rounded-full transition-all duration-100 ease-out" 
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <span className="text-xs text-slate-400 font-semibold">{Math.round(progress)}% Yükleniyor</span>
+          </div>
+        </div>
+      )}
+
       {/* Top Header */}
-      <header className="border-b border-darkBorder bg-darkBg/60 backdrop-blur sticky top-0 z-40 px-6 py-4">
+      <header className="border-b border-slate-100 bg-white/80 backdrop-blur sticky top-0 z-40 px-6 py-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/10">
-              <Database className="w-5 h-5 text-white" />
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center shadow-md shadow-indigo-500/20">
+              <Compass className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight font-sans flex items-center gap-2">
-                BALKAN TOURS <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full font-normal">İş Zekası</span>
+              <h1 className="text-xl font-extrabold tracking-tight font-sans text-slate-900 flex items-center gap-2">
+                BALKAN TOURS <span className="text-[10px] tracking-normal font-semibold bg-indigo-50 text-indigo-600 border border-indigo-100 px-2 py-0.5 rounded-lg">İş Zekası v2</span>
               </h1>
-              <p className="text-xs text-darkMuted">AI-Destekli Şikayet Analizi ve Sınıflandırma Paneli</p>
+              <p className="text-xs text-slate-500 font-medium">AI-Destekli Canlı Şikayet Analizi ve Takip Arayüzü</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            {/* Realtime Status indicator */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-darkCard border border-darkBorder text-xs">
-              <span className={`w-2.5 h-2.5 rounded-full ${realtimeConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
-              <span className="text-zinc-300 font-medium">
+            {/* Realtime Status Indicator */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+              <span className={`w-2 h-2 rounded-full ${realtimeConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
+              <span className="text-slate-600 font-semibold">
                 {realtimeConnected ? 'Canlı Akış Aktif' : 'Demo / Manuel Bağlantı'}
               </span>
             </div>
 
-            {/* Refresh button */}
+            {/* Refresh Button */}
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-semibold text-sm shadow-md transition-all duration-200 ${refreshing ? 'opacity-80 cursor-not-allowed' : 'active:scale-95'}`}
+              className={`flex items-center gap-2 px-4.5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-sm shadow-indigo-500/10 transition-all duration-200 ${refreshing ? 'opacity-85 cursor-not-allowed' : 'active:scale-95'}`}
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
               {refreshing ? 'Taranıyor (5sn)...' : '🔄 Şimdi Yenile'}
             </button>
 
-            {/* Settings button */}
+            {/* Settings Button */}
             <button
               onClick={() => setShowConfig(true)}
-              className="p-2 rounded-xl bg-darkCard border border-darkBorder hover:bg-accent text-zinc-300 hover:text-white transition-all"
+              className="p-2.5 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-all"
               title="Bağlantı Ayarları"
             >
               <Settings className="w-5 h-5" />
@@ -526,16 +613,16 @@ export default function App() {
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-6 flex flex-col gap-6">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8 flex flex-col gap-6">
         
         {/* Error / Fallback Banner */}
         {errorStatus && (
-          <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 shrink-0" />
-            <p className="flex-1 font-medium">{errorStatus}</p>
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-center gap-3 shadow-sm">
+            <AlertTriangle className="w-5 h-5 shrink-0 text-amber-600" />
+            <p className="flex-1 font-semibold">{errorStatus}</p>
             <button 
               onClick={() => setErrorStatus(null)} 
-              className="text-amber-400 hover:text-white"
+              className="text-amber-500 hover:text-amber-800"
             >
               <X className="w-4 h-4" />
             </button>
@@ -543,17 +630,17 @@ export default function App() {
         )}
 
         {!supabaseUrl && !supabaseKey && (
-          <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-900 text-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm">
             <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 shrink-0" />
+              <AlertCircle className="w-5 h-5 shrink-0 text-indigo-600" />
               <div>
-                <p className="font-semibold text-zinc-200">Demo Modu Aktif</p>
-                <p className="text-xs text-blue-400">Canlı verileri Supabase'e yazmak ve gerçek zamanlı güncellemeleri görmek için bağlantı ayarlarını yapın.</p>
+                <p className="font-bold text-slate-800">Demo Modu Aktif</p>
+                <p className="text-xs text-indigo-700">Canlı verileri kendi Supabase veritabanınız üzerinden çekmek için bağlantı ayarlarını yapın.</p>
               </div>
             </div>
             <button
               onClick={() => setShowConfig(true)}
-              className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 transition-colors"
+              className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shrink-0 transition-colors shadow-sm"
             >
               Supabase Bağlantısı Kur
             </button>
@@ -561,47 +648,47 @@ export default function App() {
         )}
 
         {/* Stats Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex items-center justify-between glow-card transition-all">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="p-6 rounded-3xl bg-white border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200">
             <div>
-              <p className="text-xs font-semibold text-darkMuted tracking-wider uppercase">Toplam Şikayet</p>
-              <h3 className="text-3xl font-extrabold mt-1 font-sans">{stats.total}</h3>
-              <p className="text-[11px] text-darkMuted mt-1">{activeTab} sekmesindeki şikayetler</p>
+              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">Toplam Şikayet</p>
+              <h3 className="text-3xl font-extrabold mt-1 text-slate-800">{stats.total}</h3>
+              <p className="text-[11px] text-slate-500 mt-1.5 font-medium">{activeTab} sekmesindeki şikayetler</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-800 text-zinc-300">
+            <div className="p-4 rounded-2xl bg-slate-50 text-slate-600">
               <FileText className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex items-center justify-between glow-card transition-all">
+          <div className="p-6 rounded-3xl bg-white border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200">
             <div>
-              <p className="text-xs font-semibold text-darkMuted tracking-wider uppercase">Kritik Seviye</p>
-              <h3 className="text-3xl font-extrabold mt-1 font-sans text-red-500">{stats.critical}</h3>
-              <p className="text-[11px] text-red-400/70 mt-1">Acil aksiyon gerektiren durumlar</p>
+              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">Kritik Seviye</p>
+              <h3 className="text-3xl font-extrabold mt-1 text-red-600">{stats.critical}</h3>
+              <p className="text-[11px] text-red-500 mt-1.5 font-medium">Acil aksiyon gerektiren durumlar</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-red-500/10 text-red-500 border border-red-500/20">
+            <div className="p-4 rounded-2xl bg-red-50 text-red-600 border border-red-100">
               <ShieldAlert className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex items-center justify-between glow-card transition-all">
+          <div className="p-6 rounded-3xl bg-white border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200">
             <div>
-              <p className="text-xs font-semibold text-darkMuted tracking-wider uppercase">En Yoğun Kategori</p>
-              <h3 className="text-lg font-bold mt-2 font-sans truncate text-blue-400">{stats.topCategory}</h3>
-              <p className="text-[11px] text-darkMuted mt-1">En çok şikayet alan başlık</p>
+              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">En Yoğun Kategori</p>
+              <h3 className="text-lg font-extrabold mt-2 text-indigo-600 truncate">{stats.topCategory}</h3>
+              <p className="text-[11px] text-slate-500 mt-1.5 font-medium">En çok şikayet alan başlık</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <div className="p-4 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100">
               <TrendingUp className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex items-center justify-between glow-card transition-all">
+          <div className="p-6 rounded-3xl bg-white border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200">
             <div>
-              <p className="text-xs font-semibold text-darkMuted tracking-wider uppercase">En Çok Geçen Lokasyon</p>
-              <h3 className="text-lg font-bold mt-2 font-sans truncate text-emerald-400">{stats.topDestination}</h3>
-              <p className="text-[11px] text-darkMuted mt-1">Şikayetlerde en sık adı geçen bölge</p>
+              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">En Çok Geçen Lokasyon</p>
+              <h3 className="text-lg font-extrabold mt-2 text-emerald-600 truncate">{stats.topDestination}</h3>
+              <p className="text-[11px] text-slate-500 mt-1.5 font-medium">Şikayetlerde geçen öncelikli bölge</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100">
               <MapPin className="w-5 h-5" />
             </div>
           </div>
@@ -611,23 +698,23 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           
           {/* Left Column: Complaints Feed */}
-          <div className="lg:col-span-2 flex flex-col gap-4">
+          <div className="lg:col-span-2 flex flex-col gap-5">
             
             {/* Filter controls panel */}
-            <div className="p-4 rounded-2xl bg-darkCard border border-darkBorder flex flex-col gap-4">
+            <div className="p-5 rounded-3xl bg-white border border-slate-100 flex flex-col gap-4 shadow-sm">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 {/* Tab Switcher */}
-                <div className="flex bg-darkBg p-1 rounded-xl border border-darkBorder">
+                <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-200/60">
                   <button
-                    onClick={() => { setActiveTab('Aktif'); setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'Aktif' ? 'bg-accent text-white shadow' : 'text-darkMuted hover:text-zinc-300'}`}
+                    onClick={() => { setActiveTab('Aktif'); setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSelectedAgency('Hepsi'); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'Aktif' ? 'bg-white text-indigo-600 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-800'}`}
                   >
                     <Inbox className="w-4 h-4" />
                     Son 10 Gün (Aktif)
                   </button>
                   <button
-                    onClick={() => { setActiveTab('Arşiv'); setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'Arşiv' ? 'bg-accent text-white shadow' : 'text-darkMuted hover:text-zinc-300'}`}
+                    onClick={() => { setActiveTab('Arşiv'); setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSelectedAgency('Hepsi'); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'Arşiv' ? 'bg-white text-indigo-600 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-800'}`}
                   >
                     <Archive className="w-4 h-4" />
                     Arşiv Dosyası
@@ -636,27 +723,27 @@ export default function App() {
 
                 {/* Quick Search */}
                 <div className="relative w-full sm:w-64">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-4 w-4 text-darkMuted" />
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <Search className="h-4 w-4 text-slate-400" />
                   </span>
                   <input
                     type="text"
-                    placeholder="Şikayetlerde veya yerlerde ara..."
+                    placeholder="Şikayetlerde, acentalarda ara..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-darkBg border border-darkBorder rounded-xl text-sm focus:outline-none focus:border-zinc-600 transition-colors"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-2xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
                   />
                 </div>
               </div>
 
-              {/* Categorical filters */}
-              <div className="flex flex-wrap items-center gap-4 text-xs pt-2 border-t border-darkBorder/40">
+              {/* Categorical & Agency filters */}
+              <div className="flex flex-wrap items-center gap-4 text-xs pt-3 border-t border-slate-100">
                 <div className="flex items-center gap-2">
-                  <span className="text-darkMuted font-medium">Kategori:</span>
+                  <span className="text-slate-500 font-bold">Kategori:</span>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="bg-darkBg border border-darkBorder px-2.5 py-1 rounded-lg text-zinc-300 focus:outline-none focus:border-zinc-700"
+                    className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors"
                   >
                     <option value="Hepsi">Tüm Kategoriler</option>
                     <option value="Ulaşım">Ulaşım</option>
@@ -668,11 +755,11 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-darkMuted font-medium">Duygu Skoru:</span>
+                  <span className="text-slate-500 font-bold">Duygu Skoru:</span>
                   <select
                     value={selectedSentiment}
                     onChange={(e) => setSelectedSentiment(e.target.value)}
-                    className="bg-darkBg border border-darkBorder px-2.5 py-1 rounded-lg text-zinc-300 focus:outline-none focus:border-zinc-700"
+                    className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors"
                   >
                     <option value="Hepsi">Tüm Seviyeler</option>
                     <option value="Kritik">Kritik</option>
@@ -681,10 +768,24 @@ export default function App() {
                   </select>
                 </div>
 
-                {(selectedCategory !== 'Hepsi' || selectedSentiment !== 'Hepsi' || searchQuery !== '') && (
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">Acenta/Firma:</span>
+                  <select
+                    value={selectedAgency}
+                    onChange={(e) => setSelectedAgency(e.target.value)}
+                    className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="Hepsi">Tüm Acentalar</option>
+                    {uniqueAgencies.map((agency) => (
+                      <option key={agency} value={agency}>{agency}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {(selectedCategory !== 'Hepsi' || selectedSentiment !== 'Hepsi' || selectedAgency !== 'Hepsi' || searchQuery !== '') && (
                   <button
-                    onClick={() => { setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSearchQuery(''); }}
-                    className="text-blue-400 hover:text-blue-300 underline ml-auto cursor-pointer"
+                    onClick={() => { setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSelectedAgency('Hepsi'); setSearchQuery(''); }}
+                    className="text-indigo-600 hover:text-indigo-800 font-bold underline ml-auto cursor-pointer"
                   >
                     Filtreleri Temizle
                   </button>
@@ -692,82 +793,131 @@ export default function App() {
               </div>
             </div>
 
-            {/* Complaints list */}
-            <div className="flex flex-col gap-4 max-h-[700px] overflow-y-auto pr-1">
+            {/* Complaints List */}
+            <div className="flex flex-col gap-5 max-h-[850px] overflow-y-auto pr-1">
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-16 bg-darkCard border border-darkBorder rounded-2xl">
-                  <RefreshCw className="w-8 h-8 text-blue-500 animate-spin" />
-                  <p className="text-sm text-darkMuted mt-4">Veriler yükleniyor...</p>
+                <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-3xl shadow-sm">
+                  <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin" />
+                  <p className="text-sm font-bold text-slate-500 mt-4">Veriler yükleniyor...</p>
                 </div>
               ) : filteredComplaints.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 bg-darkCard border border-darkBorder rounded-2xl text-center px-6">
-                  <AlertCircle className="w-10 h-10 text-darkMuted mb-3" />
-                  <h4 className="text-zinc-300 font-bold">Herhangi bir şikayet kaydı bulunamadı</h4>
-                  <p className="text-xs text-darkMuted max-w-sm mt-1">Seçilen kriterlere veya arama sorgusuna uygun kayıt bulunmamaktadır.</p>
+                <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-3xl text-center px-6 shadow-sm">
+                  <AlertCircle className="w-10 h-10 text-slate-300 mb-3" />
+                  <h4 className="text-slate-800 font-extrabold text-base">Herhangi bir şikayet kaydı bulunamadı</h4>
+                  <p className="text-xs text-slate-400 max-w-sm mt-1">Seçilen kriterlere veya arama sorgusuna uygun kayıt bulunmamaktadır.</p>
                 </div>
               ) : (
                 filteredComplaints.map((comp) => (
                   <div 
                     key={comp.id || comp.sikayet_id}
-                    className={`p-5 rounded-2xl bg-darkCard border transition-all duration-200 hover:-translate-y-[2px] ${
+                    className={`p-6 rounded-3xl bg-white border transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md ${
                       comp.ai_duygu_skoru === 'Kritik' 
-                        ? 'border-red-950/50 hover:border-red-900/60 shadow-lg shadow-red-950/5' 
-                        : 'border-darkBorder hover:border-zinc-800'
+                        ? 'border-red-100 hover:border-red-200' 
+                        : 'border-slate-100 hover:border-slate-200'
                     }`}
                   >
                     {/* Card Header badges */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                       <div className="flex items-center gap-2 flex-wrap">
+                        {/* Target Agency Badge */}
+                        {comp.acenta_adi && comp.acenta_adi !== 'Belirtilmemiş' && (
+                          <span className="flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100/50">
+                            <Building2 className="w-3.5 h-3.5" />
+                            {comp.acenta_adi}
+                          </span>
+                        )}
+
                         {/* AI Category Badge */}
-                        <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide ${
-                          comp.ai_kategori === 'Ulaşım' ? 'bg-blue-900/30 text-blue-300 border border-blue-800/30' :
-                          comp.ai_kategori === 'Rehber' ? 'bg-purple-900/30 text-purple-300 border border-purple-800/30' :
-                          comp.ai_kategori === 'Otel' ? 'bg-emerald-900/30 text-emerald-300 border border-emerald-800/30' :
-                          comp.ai_kategori === 'Program Kayması' ? 'bg-amber-900/30 text-amber-300 border border-amber-800/30' :
-                          'bg-zinc-850 text-zinc-400 border border-zinc-700/30'
+                        <span className={`px-3 py-1 rounded-xl text-xs font-bold ${
+                          comp.ai_kategori === 'Ulaşım' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
+                          comp.ai_kategori === 'Rehber' ? 'bg-purple-50 text-purple-600 border border-purple-100' :
+                          comp.ai_kategori === 'Otel' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                          comp.ai_kategori === 'Program Kayması' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                          'bg-slate-50 text-slate-500 border border-slate-200'
                         }`}>
                           {comp.ai_kategori}
                         </span>
 
                         {/* AI Sentiment Badge */}
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          comp.ai_duygu_skoru === 'Kritik' ? 'bg-red-500/10 text-red-400 border border-red-500/30' :
-                          comp.ai_duygu_skoru === 'Orta' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' :
-                          'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
+                          comp.ai_duygu_skoru === 'Kritik' ? 'bg-red-50 text-red-600 border border-red-200' :
+                          comp.ai_duygu_skoru === 'Orta' ? 'bg-amber-50 text-amber-600 border border-amber-200' :
+                          'bg-emerald-50 text-emerald-600 border border-emerald-200'
                         }`}>
                           {comp.ai_duygu_skoru}
                         </span>
 
                         {/* Source Badge */}
-                        <span className="px-2 py-0.5 rounded-full text-[10px] bg-zinc-800 text-zinc-400 border border-darkBorder font-medium">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-500 border border-slate-200/50 font-semibold">
                           {comp.kaynak_site}
                         </span>
                       </div>
 
-                      {/* Date */}
-                      <div className="flex items-center gap-1.5 text-xs text-darkMuted">
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span>{new Date(comp.tarih).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                      </div>
+                      {/* Complainant Name */}
+                      {comp.sikayetci_adi && (
+                        <div className="flex items-center gap-1 text-xs text-slate-500 font-bold bg-slate-50 border border-slate-200/60 px-2.5 py-0.5 rounded-lg">
+                          <User className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{comp.sikayetci_adi}</span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Content */}
-                    <h4 className="text-base font-bold text-zinc-100 hover:text-white leading-snug mb-2">
+                    <h4 className="text-lg font-extrabold text-slate-800 hover:text-slate-900 leading-snug mb-2 flex items-start gap-2">
                       {comp.baslik}
                     </h4>
-                    <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line mb-4">
+                    <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line mb-4 font-normal">
                       {comp.icerik}
                     </p>
 
-                    {/* Keywords Matrix matches (Tag Cloud inside card) */}
+                    {/* Meta info bar inside card */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium">
+                      <div className="flex flex-col gap-1.5">
+                        {comp.tur_adi && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-slate-400 font-bold">Tur:</span>
+                            <span className="text-slate-700 font-bold">{comp.tur_adi}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-slate-400 font-bold">Şikayet Tarihi:</span>
+                          <span className="text-slate-700 font-bold">
+                            {new Date(comp.tarih).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        {comp.tur_tarihi && comp.tur_tarihi !== 'Belirtilmemiş' && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-slate-400 font-bold">Tur Tarihi:</span>
+                            <span className="text-indigo-600 font-extrabold bg-indigo-50 border border-indigo-100/50 px-2 py-0.5 rounded-lg">{comp.tur_tarihi}</span>
+                          </div>
+                        )}
+                        
+                        {comp.sikayet_url && (
+                          <a 
+                            href={comp.sikayet_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-extrabold mt-auto hover:underline"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Şikayet Sayfasına Git
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Keywords Tag Cloud */}
                     {comp.anahtar_kelime && (
-                      <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-darkBorder/40">
-                        <MapPin className="w-3.5 h-3.5 text-darkMuted" />
-                        <span className="text-[11px] text-darkMuted font-medium mr-1">Konum Eşleşmeleri:</span>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-4 pt-3 border-t border-slate-100/60">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Konum Eşleşmeleri:</span>
                         {comp.anahtar_kelime.split(',').map((kw, i) => (
                           <span 
                             key={i} 
-                            className="px-2 py-0.5 rounded bg-zinc-800/80 hover:bg-zinc-800 text-[10px] text-zinc-400 border border-darkBorder transition-colors"
+                            className="px-2 py-0.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-[10px] text-slate-600 border border-slate-200/50 font-bold transition-colors"
                           >
                             {kw.trim()}
                           </span>
@@ -781,30 +931,30 @@ export default function App() {
           </div>
 
           {/* Right Column: Analytics & Info */}
-          <div className="flex flex-col gap-6 sticky top-24">
+          <div className="flex flex-col gap-6 sticky top-28">
             
             {/* Donut Chart Panel */}
-            <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex flex-col gap-4">
+            <div className="p-6 rounded-3xl bg-white border border-slate-100 flex flex-col gap-4 shadow-sm">
               <div>
-                <h3 className="text-base font-bold flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-blue-500" />
+                <h3 className="text-base font-extrabold text-slate-800 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-indigo-600" />
                   Kategori Dağılımı ({activeTab})
                 </h3>
-                <p className="text-xs text-darkMuted">Kategorilere göre yapay zeka analiz dağılımı</p>
+                <p className="text-xs text-slate-400 font-semibold">Kategorilere göre yapay zeka analiz dağılımı</p>
               </div>
 
-              <div className="py-4 flex justify-center">
+              <div className="py-2 flex justify-center">
                 {chartData.hasData ? (
                   <div className="w-full">
                     <ReactApexChart 
                       options={chartData.options} 
                       series={chartData.series} 
                       type="donut" 
-                      height={280} 
+                      height={290} 
                     />
                   </div>
                 ) : (
-                  <div className="py-12 text-center text-xs text-darkMuted">
+                  <div className="py-12 text-center text-xs text-slate-400 font-semibold">
                     Analiz edecek veri bulunmamaktadır.
                   </div>
                 )}
@@ -812,35 +962,38 @@ export default function App() {
             </div>
 
             {/* Keyword Matrix Reference */}
-            <div className="p-5 rounded-2xl bg-darkCard border border-darkBorder flex flex-col gap-3">
-              <h4 className="text-sm font-bold text-zinc-200">Balkan Konum Matrix Haritası</h4>
-              <p className="text-xs text-darkMuted leading-relaxed">
+            <div className="p-6 rounded-3xl bg-white border border-slate-100 flex flex-col gap-3 shadow-sm">
+              <h4 className="text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                <Globe className="w-4 h-4 text-emerald-500" />
+                Balkan Konum Harita Matrisi
+              </h4>
+              <p className="text-xs text-slate-400 font-semibold leading-relaxed">
                 Sistem aşağıdaki balkan konumlarını şikayet metninde otomatik olarak tarar:
               </p>
               <div className="flex flex-col gap-2 mt-1">
-                <div className="flex justify-between text-xs border-b border-darkBorder/40 pb-1">
-                  <span className="text-zinc-400">K. Makedonya</span>
-                  <span className="text-indigo-400 font-medium">Üsküp, Ohrid, Tetovo, Matka</span>
+                <div className="flex justify-between text-xs border-b border-slate-100 pb-1.5">
+                  <span className="text-slate-500 font-medium">K. Makedonya</span>
+                  <span className="text-indigo-600 font-bold">Üsküp, Ohrid, Tetovo, Matka</span>
                 </div>
-                <div className="flex justify-between text-xs border-b border-darkBorder/40 pb-1">
-                  <span className="text-zinc-400">Bosna Hersek</span>
-                  <span className="text-indigo-400 font-medium">Saraybosna, Mostar, Blagaj, Konjic</span>
+                <div className="flex justify-between text-xs border-b border-slate-100 pb-1.5">
+                  <span className="text-slate-500 font-medium">Bosna Hersek</span>
+                  <span className="text-indigo-600 font-bold">Saraybosna, Mostar, Blagaj, Konjic</span>
                 </div>
-                <div className="flex justify-between text-xs border-b border-darkBorder/40 pb-1">
-                  <span className="text-zinc-400">Sırbistan</span>
-                  <span className="text-indigo-400 font-medium">Belgrad, Novi Sad, Niş</span>
+                <div className="flex justify-between text-xs border-b border-slate-100 pb-1.5">
+                  <span className="text-slate-500 font-medium">Sırbistan</span>
+                  <span className="text-indigo-600 font-bold">Belgrad, Novi Sad, Niş</span>
                 </div>
-                <div className="flex justify-between text-xs border-b border-darkBorder/40 pb-1">
-                  <span className="text-zinc-400">Karadağ</span>
-                  <span className="text-indigo-400 font-medium">Kotor, Budva, Podgorica, Tivat</span>
+                <div className="flex justify-between text-xs border-b border-slate-100 pb-1.5">
+                  <span className="text-slate-500 font-medium">Karadağ</span>
+                  <span className="text-indigo-600 font-bold">Kotor, Budva, Podgorica, Tivat</span>
                 </div>
-                <div className="flex justify-between text-xs border-b border-darkBorder/40 pb-1">
-                  <span className="text-zinc-400">Arnavutluk</span>
-                  <span className="text-indigo-400 font-medium">Tiran, Durres, Elbasan, İşkodra</span>
+                <div className="flex justify-between text-xs border-b border-slate-100 pb-1.5">
+                  <span className="text-slate-500 font-medium">Arnavutluk</span>
+                  <span className="text-indigo-600 font-bold">Tiran, Durres, Elbasan, İşkodra</span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-zinc-400">Kosova</span>
-                  <span className="text-indigo-400 font-medium">Prizren, Priştine, Pey</span>
+                  <span className="text-slate-500 font-medium">Kosova</span>
+                  <span className="text-indigo-600 font-bold">Prizren, Priştine, Pey</span>
                 </div>
               </div>
             </div>
@@ -848,60 +1001,60 @@ export default function App() {
         </div>
       </main>
 
-      {/* Configuration modal */}
+      {/* Configuration Modal */}
       {showConfig && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm transition-opacity">
-          <div className="w-full max-w-md bg-darkCard border border-darkBorder rounded-2xl shadow-2xl p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+          <div className="w-full max-w-md bg-white border border-slate-100 rounded-3xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowConfig(false)}
-              className="absolute top-4 right-4 text-darkMuted hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-650 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-3 mb-4">
-              <Settings className="w-5 h-5 text-blue-500" />
-              <h3 className="text-lg font-bold text-zinc-100">Bağlantı Ayarları</h3>
+              <Settings className="w-5 h-5 text-indigo-650" />
+              <h3 className="text-lg font-extrabold text-slate-800">Bağlantı Ayarları</h3>
             </div>
 
-            <p className="text-xs text-darkMuted leading-relaxed mb-4">
+            <p className="text-xs text-slate-400 font-semibold leading-relaxed mb-4">
               Verileri Supabase veritabanınıza yazmak ve web scraping tetiklemek için bilgilerinizi girin. Bu bilgiler tarayıcınızın yerel hafızasında (LocalStorage) saklanır.
             </p>
 
             <form onSubmit={handleSaveConfig} className="flex flex-col gap-4">
               <div>
-                <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">Supabase URL</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Supabase URL</label>
                 <input
                   type="url"
                   required
                   placeholder="https://xxxxxx.supabase.co"
                   value={supabaseUrl}
                   onChange={(e) => setSupabaseUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-darkBg border border-darkBorder rounded-xl text-sm focus:outline-none focus:border-zinc-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">Supabase Anon Key</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Supabase Anon Key</label>
                 <input
                   type="password"
                   required
                   placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                   value={supabaseKey}
                   onChange={(e) => setSupabaseKey(e.target.value)}
-                  className="w-full px-3 py-2 bg-darkBg border border-darkBorder rounded-xl text-sm focus:outline-none focus:border-zinc-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">Scrape Webhook URL</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Scrape Webhook URL</label>
                 <input
                   type="text"
                   required
                   placeholder="/.netlify/functions/scrape-webhook"
                   value={webhookUrl}
                   onChange={(e) => setWebhookUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-darkBg border border-darkBorder rounded-xl text-sm focus:outline-none focus:border-zinc-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
                 />
               </div>
 
@@ -909,13 +1062,13 @@ export default function App() {
                 <button
                   type="button"
                   onClick={handleResetConfig}
-                  className="flex-1 px-4 py-2 border border-darkBorder text-zinc-400 hover:text-white rounded-xl text-sm font-semibold hover:bg-zinc-800 transition-all active:scale-95"
+                  className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-500 hover:text-slate-800 rounded-2xl text-sm font-bold hover:bg-slate-50 transition-all active:scale-95"
                 >
                   Demo Moduna Dön
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-blue-500/10 transition-all active:scale-95"
+                  className="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/10 transition-all active:scale-95"
                 >
                   Değişiklikleri Kaydet
                 </button>
@@ -926,7 +1079,7 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-darkBorder py-6 mt-auto bg-darkBg/30 text-center text-xs text-darkMuted">
+      <footer className="border-t border-slate-100 py-6 mt-auto bg-white text-center text-xs text-slate-400 font-semibold">
         <p>© 2026 Balkan Tours AI Complaint Tracking System. Tüm Hakları Saklıdır.</p>
       </footer>
     </div>

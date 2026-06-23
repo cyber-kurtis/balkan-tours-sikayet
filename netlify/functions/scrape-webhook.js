@@ -20,48 +20,60 @@ const MOCK_COMPLAINTS = [
     sikayet_id: "sikayet-101",
     tarih: new Date().toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Rehber Rezaleti ve Program Kayması",
-    icerik: "Büyük Balkan Turu kapsamında Üsküp and Saraybosna gezisi yapacaktık. Ancak rehberimiz son derece tecrübesizdi. Mostar Köprüsü'ne gitmek yerine saatlerce otobüste bekledik. Program kayması yüzünden Blagaj Tekkesi'ni hiç göremedik.",
+    baslik: "Ustour Rehber Rezaleti ve Program Kayması",
+    icerik: "Büyük Balkan Turu kapsamında Üsküp ve Saraybosna gezisi yapacaktık. Ancak rehberimiz son derece tecrübesizdi. Mostar Köprüsü'ne gitmek yerine saatlerce otobüste bekledik. Program kayması yüzünden Blagaj Tekkesi'ni hiç göremedik.",
+    sikayetci_adi: "Kaan K.",
+    sikayet_url: "https://www.sikayetvar.com/ustour/ustour-rehber-rezaleti-ve-program-kaymasi",
     durum: "Aktif"
   },
   {
     sikayet_id: "sikayet-102",
     tarih: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Kotor'da Rezil Otel Deneyimi",
-    icerik: "Budva ve Kotor turlarını içeren Balkan Turu'na katıldık. Kalacağımız otel Kotor'da çok eski ve pisti. Klimalar çalışmıyordu, sıcak su akmıyordu. Tur rehberi hiçbir şekilde yardımcı olmadı.",
+    baslik: "Jolly Tur Kotor'da Rezil Otel Deneyimi",
+    icerik: "Budva ve Kotor turlarını içeren 12-19 Haziran Balkan Turu'na katıldık. Kalacağımız otel Kotor'da çok eski ve pisti. Klimalar çalışmıyordu, sıcak su akmıyordu. Tur rehberi hiçbir şekilde yardımcı olmadı.",
+    sikayetci_adi: "Ayşe T.",
+    sikayet_url: "https://www.sikayetvar.com/jolly-tur/jolly-tur-kotorda-rezil-otel-deneyimi",
     durum: "Aktif"
   },
   {
     sikayet_id: "sikayet-103",
     tarih: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     kaynak_site: "Forum",
-    baslik: "Otobüslü Balkan Turu Ulaşım Sıkıntısı",
-    icerik: "Otobüslü Balkan Turu ile Belgrad ve Novi Sad'a gittik. Otobüs yolda 2 kere arıza yaptı, saatlerce sınır kapılarında bekletildik. Ulaşım planlaması çok kötüydü.",
+    baslik: "Tatilbudur Otobüslü Balkan Turu Ulaşım Sıkıntısı",
+    icerik: "Tatilbudur ile katıldığımız Mayıs ayındaki Otobüslü Balkan Turu ile Belgrad ve Novi Sad'a gittik. Otobüs yolda 2 kere arıza yaptı, saatlerce sınır kapılarında bekletildik. Ulaşım planlaması çok kötüydü.",
+    sikayetci_adi: "Mustafa B.",
+    sikayet_url: "https://www.tatilforum.com/tatilbudur/otobuslu-balkan-turu-ulasim-sikintisi",
     durum: "Aktif"
   },
   {
     sikayet_id: "sikayet-104",
     tarih: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     kaynak_site: "Google Reviews",
-    baslik: "Tiran ve Prizren Gezisi - Rehber Yetersizliği",
-    icerik: "Arnavutluk Tiran ve Kosova Prizren rehberi ülkeyi hiç tanımıyordu. Bizi sadece anlaşmalı olduğu dükkanlara götürdü, tarihi yerleri anlatmadı.",
+    baslik: "Prontotour Tiran ve Prizren Gezisi - Rehber Yetersizliği",
+    icerik: "Prontotour ile Kurban Bayramı Balkan Turu'na katıldık. Arnavutluk Tiran ve Kosova Prizren rehberi ülkeyi hiç tanımıyordu. Bizi sadece anlaşmalı olduğu dükkanlara götürdü, tarihi yerleri anlatmadı.",
+    sikayetci_adi: "Zeynep Y.",
+    sikayet_url: "https://www.google.com/maps/contrib/prontotour-reviews",
     durum: "Aktif"
   },
   {
     sikayet_id: "sikayet-105",
     tarih: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Eski Tarihli Otel Şikayeti",
-    icerik: "Ohrid gölü kenarında otel diye bizi çok uzak bir pansiyona yerleştiler. Bu balkan turu firması tam bir hayal kırıklığı.",
-    durum: "Arşiv" // Old, should be archived
+    baslik: "Gezinomi Eski Tarihli Otel Şikayeti",
+    icerik: "Ohrid gölü kenarında otel diye bizi 5-12 Nisan tarihindeki turda çok uzak bir pansiyona yerleştirdiler. Bu balkan turu firması tam bir hayal kırıklığı.",
+    sikayetci_adi: "Mehmet A.",
+    sikayet_url: "https://www.sikayetvar.com/gezinomi/gezinomi-eski-tarihli-otel-sikayeti",
+    durum: "Arşiv"
   },
   {
     sikayet_id: "sikayet-106",
     tarih: new Date().toISOString(),
     kaynak_site: "Sikayetvar",
-    baslik: "Yemeklerin kalitesizliği",
-    icerik: "Saraybosna ve Belgrad gezisinde anlaşmalı restoranlarda verilen yemekler çok kötüydü. Sürekli köfte yemekten bıktık.",
+    baslik: "Gruppal Yemeklerin Kalitesizliği",
+    icerik: "Gruppal ile Saraybosna ve Belgrad gezisinde anlaşmalı restoranlarda verilen yemekler çok kötüydü. Sürekli köfte yemekten bıktık.",
+    sikayetci_adi: "Ebru G.",
+    sikayet_url: "https://www.sikayetvar.com/gruppal/gruppal-yemeklerin-kalitesizligi",
     durum: "Aktif"
   }
 ];
@@ -83,7 +95,11 @@ function ruleBasedClassifier(title, content) {
   const text = (title + " " + content).toLowerCase();
   let ai_kategori = "Alakasız";
   let ai_duygu_skoru = "Düşük";
+  let acenta_adi = "Belirtilmemiş";
+  let tur_adi = "Genel Balkan Turu";
+  let tur_tarihi = "Belirtilmemiş";
 
+  // Category classification
   if (text.includes("otel") || text.includes("pansiyon") || text.includes("oda") || text.includes("klima") || text.includes("temizlik")) {
     ai_kategori = "Otel";
   } else if (text.includes("otobüs") || text.includes("uçak") || text.includes("yol") || text.includes("ulaşım") || text.includes("arıza") || text.includes("şoför")) {
@@ -93,44 +109,90 @@ function ruleBasedClassifier(title, content) {
   } else if (text.includes("program") || text.includes("zamanlama") || text.includes("kayma") || text.includes("yetişemedik") || text.includes("göremedik")) {
     ai_kategori = "Program Kayması";
   } else if (text.includes("balkan") || text.includes("tur")) {
-    ai_kategori = "Ulaşım"; // default fallback for tur complains
+    ai_kategori = "Ulaşım";
   }
 
+  // Sentiment classification
   if (text.includes("rezalet") || text.includes("kötü") || text.includes("berbat") || text.includes("asla") || text.includes("tüketici hakem") || text.includes("paramı")) {
     ai_duygu_skoru = "Kritik";
   } else if (text.includes("sorun") || text.includes("sıkıntı") || text.includes("şikayet") || text.includes("yetersiz")) {
     ai_duygu_skoru = "Orta";
   }
 
-  return { ai_kategori, ai_duygu_skoru };
+  // Agency/Firm detection
+  const agencies = [
+    { name: "Jolly Tur", kw: ["jolly", "joly"] },
+    { name: "Ustour", kw: ["ustour", "us tour", "us-tour"] },
+    { name: "Tatilbudur", kw: ["tatilbudur", "tatil budur"] },
+    { name: "Prontotour", kw: ["pronto", "prontotour"] },
+    { name: "Gezinomi", kw: ["gezinomi"] },
+    { name: "Gruppal", kw: ["gruppal"] },
+    { name: "Kappa Tur", kw: ["kappa"] },
+    { name: "Coral Travel", kw: ["coral"] },
+    { name: "Touristica", kw: ["touristica", "turistica"] }
+  ];
+  for (const agency of agencies) {
+    if (agency.kw.some(k => text.includes(k))) {
+      acenta_adi = agency.name;
+      break;
+    }
+  }
+
+  // Tour name detection
+  if (text.includes("büyük balkan")) {
+    tur_adi = "Büyük Balkan Turu";
+  } else if (text.includes("otobüslü balkan")) {
+    tur_adi = "Otobüslü Balkan Turu";
+  } else if (text.includes("uçaklı balkan")) {
+    tur_adi = "Uçaklı Balkan Turu";
+  } else if (text.includes("klasik balkan")) {
+    tur_adi = "Klasik Balkan Turu";
+  }
+
+  // Tour date detection
+  const dateRegexes = [
+    /([0-9]+-[0-9]+\s+[a-zışğüçö]+)/gi,
+    /([0-9]+\s+[a-zışğüçö]+\s+[0-9]{4})/gi,
+    /([0-9]+\s+[a-zışğüçö]+)/gi,
+    /(bayram[a-zışğüçö\s]*)/gi,
+    /(mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık|ocak|şubat|mart|nisan)/gi
+  ];
+  for (const regex of dateRegexes) {
+    const match = text.match(regex);
+    if (match && match.length > 0) {
+      tur_tarihi = match[0].trim();
+      tur_tarihi = tur_tarihi.charAt(0).toUpperCase() + tur_tarihi.slice(1);
+      break;
+    }
+  }
+
+  return { ai_kategori, ai_duygu_skoru, acenta_adi, tur_adi, tur_tarihi };
 }
 
-// Call LLM for categorization and sentiment scoring
+// Call LLM for categorization, sentiment, agency, tour name and tour date
 async function callLLM(title, icerik) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const openAIKey = process.env.OPENAI_API_KEY;
 
   const prompt = `
-Aşağıdaki şikayet metnini incele ve kategorisini ile duygu skorunu belirle.
+Aşağıdaki şikayet metnini incele ve istenen alanları belirle.
 Şikayet Başlığı: "${title}"
 Şikayet İçeriği: "${icerik}"
 
-Kategori olarak şu seçeneklerden tam olarak birini seç:
-- "Ulaşım" (otobüs, uçak, transfer, arıza vb.)
-- "Rehber" (rehber rehberliği, ilgisizliği, tecrübesizliği vb.)
-- "Otel" (konaklama, oda temizliği, otel konumu vb.)
-- "Program Kayması" (plana uymama, süre yetersizliği, gidilemeyen yerler vb.)
-- "Alakasız" (balkan turları ile ilgili olmayan konular)
-
-Duygu Skoru olarak şu seçeneklerden tam olarak birini seç:
-- "Kritik" (ciddi maddi/manevi zarar, dava tehdidi, aşırı sert üslup)
-- "Orta" (standart şikayetler, beklentinin karşılanmaması)
-- "Düşük" (hafif memnuniyetsizlikler, tavsiyeler)
+Sınıflandırma Kuralları:
+1. Kategori (ai_kategori): Şu seçeneklerden birini seç: "Ulaşım", "Rehber", "Otel", "Program Kayması", "Alakasız".
+2. Duygu Skoru (ai_duygu_skoru): Şu seçeneklerden birini seç: "Kritik", "Orta", "Düşük".
+3. Hedef Acenta/Firma Adı (acenta_adi): Şikayet edilen seyahat acentasını/firmasını metinden tespit et (örn: Jolly Tur, Ustour, Tatilbudur, Prontotour, Gezinomi, Gruppal, Kappa Tur vb.). Eğer metinde herhangi bir firma adı geçmiyorsa veya bulunamıyorsa "Belirtilmemiş" yaz.
+4. Tur Adı (tur_adi): Katılım sağlanan tur ismini metinden çıkar (örn: Büyük Balkan Turu, Otobüslü Balkan Turu, Klasik Balkan Turu, 9 Günlük Balkan Turu vb.). Bulunamazsa "Genel Balkan Turu" yaz.
+5. Katıldığı Tur Tarihi (tur_tarihi): Kişinin şikayete konu olan tura katıldığı tarihi veya dönemini metinden tespit et (örn: "15-22 Haziran 2026", "Kurban Bayramı 2026", "Mayıs sonu", "Geçen hafta" vb.). Eğer metinde tur tarihi/dönemiyle ilgili hiçbir ipucu yoksa "Belirtilmemiş" yaz.
 
 Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
 {
   "ai_kategori": "Kategori",
-  "ai_duygu_skoru": "Duygu Skoru"
+  "ai_duygu_skoru": "Duygu Skoru",
+  "acenta_adi": "Firma Adı",
+  "tur_adi": "Tur Adı",
+  "tur_tarihi": "Tur Tarihi"
 }
 `;
 
@@ -150,7 +212,10 @@ Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
       const parsed = JSON.parse(text.trim());
       return {
         ai_kategori: parsed.ai_kategori || "Alakasız",
-        ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta"
+        ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta",
+        acenta_adi: parsed.acenta_adi || "Belirtilmemiş",
+        tur_adi: parsed.tur_adi || "Genel Balkan Turu",
+        tur_tarihi: parsed.tur_tarihi || "Belirtilmemiş"
       };
     } catch (e) {
       console.warn("Gemini API call failed, falling back to rule-based:", e.message);
@@ -174,7 +239,10 @@ Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
       const parsed = JSON.parse(text.trim());
       return {
         ai_kategori: parsed.ai_kategori || "Alakasız",
-        ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta"
+        ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta",
+        acenta_adi: parsed.acenta_adi || "Belirtilmemiş",
+        tur_adi: parsed.tur_adi || "Genel Balkan Turu",
+        tur_tarihi: parsed.tur_tarihi || "Belirtilmemiş"
       };
     } catch (e) {
       console.warn("OpenAI API call failed, falling back to rule-based:", e.message);
@@ -259,12 +327,15 @@ async function scrapeComplaints() {
         const titleEl = card.querySelector('.title, .card-title, h2, h3');
         const descEl = card.querySelector('.description, .card-text, p');
         const linkEl = card.querySelector('a');
+        const userEl = card.querySelector('.username, .user-name, .member-name, .complainant');
 
         if (titleEl && descEl) {
           const baslik = titleEl.textContent.trim();
           const icerik = descEl.textContent.trim();
           const parsedUrl = linkEl ? linkEl.getAttribute('href') : '';
+          const sikayet_url = parsedUrl ? (parsedUrl.startsWith('http') ? parsedUrl : `https://www.sikayetvar.com${parsedUrl}`) : `https://www.sikayetvar.com/arama/?q=Balkan+Turu`;
           const sikayet_id = parsedUrl ? parsedUrl.split('/').pop() : `parsed-${Date.now()}-${idx}`;
+          const sikayetci_adi = userEl ? userEl.textContent.trim() : 'Anonim Kullanıcı';
 
           const hasBalkanKeywords = ALL_KEYWORDS_FLAT.some(kw => 
             baslik.toLowerCase().includes(kw.toLowerCase()) || 
@@ -278,6 +349,8 @@ async function scrapeComplaints() {
               kaynak_site: "Sikayetvar",
               baslik,
               icerik,
+              sikayetci_adi,
+              sikayet_url,
               durum: "Aktif"
             });
           }
@@ -339,6 +412,11 @@ export async function handler(event, context) {
         anahtar_kelime: matchedKw,
         ai_kategori: classification.ai_kategori,
         ai_duygu_skoru: classification.ai_duygu_skoru,
+        sikayetci_adi: comp.sikayetci_adi || "Anonim Kullanıcı",
+        acenta_adi: classification.acenta_adi || "Belirtilmemiş",
+        tur_adi: classification.tur_adi || "Genel Balkan Turu",
+        tur_tarihi: classification.tur_tarihi || "Belirtilmemiş",
+        sikayet_url: comp.sikayet_url || "https://www.sikayetvar.com",
         durum: comp.durum || 'Aktif'
       });
     }

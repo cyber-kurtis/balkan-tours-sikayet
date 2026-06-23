@@ -2,33 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar for Premium Dark Mode */
+/* Custom Scrollbar for Modern Light Mode */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #f8fafc; /* slate-50 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #cbd5e1; /* slate-300 */
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #94a3b8; /* slate-400 */
 }
 
-/* Custom background animation or glassmorphism utility classes */
-.glass-panel {
-  background: rgba(24, 24, 27, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(39, 39, 42, 0.5);
+/* Animations for Splash Screen Globe Logo */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.glow-card:hover {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Custom fade-out for intro screen */
+.animate-fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+/* Custom styles for cards & lists */
+.card-hover-shadow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-shadow:hover {
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.04), 0 8px 10px -6px rgba(79, 70, 229, 0.04);
 }
