@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Şikayet mi var? option 2 SVG logo</title>
+  <desc id="desc">A vector logo showing a complaint alert turning into a tracked resolution path with a check mark and the Şikayet mi var? wordmark.</desc>
+  <defs>
+    <linearGradient id="alertGradient" x1="176" y1="172" x2="290" y2="286" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF7A5F"/>
+      <stop offset="1" stop-color="#E84B3C"/>
+    </linearGradient>
+    <linearGradient id="resolveGradient" x1="564" y1="218" x2="765" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#162F59"/>
+      <stop offset="0.55" stop-color="#18AFA7"/>
+      <stop offset="1" stop-color="#68C884"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0B2341" flood-opacity="0.13"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" rx="0" fill="#FFFFFF"/>
+
+  <g filter="url(#softShadow)">
+    <circle cx="226" cy="228" r="58" fill="url(#alertGradient)"/>
+    <rect x="217" y="184" width="18" height="67" rx="9" fill="#FFFFFF"/>
+    <circle cx="226" cy="265" r="10" fill="#FFFFFF"/>
+  </g>
+
+  <path d="M322 247 C365 247 374 205 416 205 C468 205 469 300 526 300 C603 300 609 166 690 166"
+        stroke="url(#resolveGradient)"
+        stroke-width="24"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <circle cx="416" cy="205" r="18" fill="#FFFFFF" stroke="#162F59" stroke-width="13"/>
+  <circle cx="526" cy="300" r="18" fill="#FFFFFF" stroke="#162F59" stroke-width="13"/>
+
+  <g filter="url(#softShadow)">
+    <circle cx="727" cy="152" r="48" fill="#63C886"/>
+    <path d="M704 151 L720 167 L752 128"
+          stroke="#FFFFFF"
+          stroke-width="17"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+
+  <text x="176" y="455"
+        fill="#102A50"
+        font-family="Inter, Manrope, Arial, sans-serif"
+        font-size="88"
+        font-weight="800"
+        letter-spacing="0">Şikayet <tspan fill="#18AFA7">mi var?</tspan></text>
+
+  <text x="180" y="516"
+        fill="#52647A"
+        font-family="Inter, Manrope, Arial, sans-serif"
+        font-size="24"
+        font-weight="500"
+        letter-spacing="0">10 farklı şikayet portalı tek kanalda, şikayetler portaldan 5 dk önce bu ekranda</text>
+</svg>
