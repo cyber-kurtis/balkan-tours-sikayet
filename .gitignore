@@ -31,3 +31,4 @@ Thumbs.db
 balkan-turu.html
 scripts/inspect-html-structure.js
 scripts/test-parse-local.js
+scripts/check-live-data.js

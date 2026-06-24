@@ -365,6 +365,7 @@ async function scrapeComplaints() {
       // Selectors matching both search layout and topic card grid layout
       const cards = document.querySelectorAll('div[role="group"][aria-roledescription="slide"], article, .complaint-card, .card');
       const results = [];
+      const seenIds = new Set();
 
       cards.forEach((card, idx) => {
         const titleLink = card.querySelector('a[href*="/"][class*="line-clamp"], a[href*="/"][class*="title"], a.after\\:absolute');
@@ -411,17 +412,20 @@ async function scrapeComplaints() {
 
             if (hasBalkanKeywords || urlToScrape.includes('balkan-turu')) {
               // If it's already under the balkan-turu tag, it's 100% relevant!
-              results.push({
-                sikayet_id,
-                tarih: dateText,
-                kaynak_site: "Sikayetvar",
-                baslik,
-                icerik,
-                sikayetci_adi,
-                sikayet_url,
-                acenta_adi,
-                durum: "Aktif"
-              });
+              if (!seenIds.has(sikayet_id)) {
+                seenIds.add(sikayet_id);
+                results.push({
+                  sikayet_id,
+                  tarih: dateText,
+                  kaynak_site: "Sikayetvar",
+                  baslik,
+                  icerik,
+                  sikayetci_adi,
+                  sikayet_url,
+                  acenta_adi,
+                  durum: "Aktif"
+                });
+              }
             }
           }
         }
