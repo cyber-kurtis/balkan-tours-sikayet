@@ -136,6 +136,7 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [splashFade, setSplashFade] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [gifError, setGifError] = useState(false);
 
   // Supabase & Webhook settings
   const [supabaseUrl, setSupabaseUrl] = useState(() => localStorage.getItem('SB_URL') || import.meta.env.VITE_SUPABASE_URL || '');
@@ -538,12 +539,23 @@ export default function App() {
       {showSplash && (
         <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-white transition-all duration-500 ease-in-out ${splashFade ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100'}`}>
           <div className="flex flex-col items-center gap-6 max-w-sm px-8 text-center">
-            {/* Spinning Custom Animated Logo */}
-            <div className="relative w-24 h-24 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-4 border-slate-100 animate-pulse"></div>
-              <div className="absolute inset-0 rounded-full border-4 border-t-indigo-600 border-r-transparent border-b-transparent border-l-transparent animate-spin duration-1000"></div>
-              <Compass className="w-10 h-10 text-indigo-600 animate-bounce" />
-            </div>
+            {/* Spinning Custom Animated Logo / GIF */}
+            {!gifError ? (
+              <div className="relative w-32 h-32 flex items-center justify-center">
+                <img 
+                  src="/loader.gif" 
+                  alt="Yükleniyor..." 
+                  className="w-full h-full object-contain"
+                  onError={() => setGifError(true)}
+                />
+              </div>
+            ) : (
+              <div className="relative w-24 h-24 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full border-4 border-slate-100 animate-pulse"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-t-indigo-600 border-r-transparent border-b-transparent border-l-transparent animate-spin duration-1000"></div>
+                <Compass className="w-10 h-10 text-indigo-600 animate-bounce" />
+              </div>
+            )}
 
             <div className="space-y-2">
               <h2 className="text-3xl font-extrabold tracking-wider font-sans text-slate-850">

@@ -1,0 +1,11 @@
+BALKAN TOURS - PUBLIC ASSETS DIRECTORY
+---------------------------------------
+You can drop your custom loading GIF or video file here.
+
+To show a custom GIF on dashboard startup:
+1. Drop your GIF file in this folder.
+2. Name it "loader.gif".
+3. Build and deploy the site.
+
+The application will automatically detect it and render it during the entrance animation!
+If no "loader.gif" is found, the system will seamlessly fall back to the premium SVG compass animation.
