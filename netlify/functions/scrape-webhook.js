@@ -253,11 +253,52 @@ Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
   return ruleBasedClassifier(title, icerik);
 }
 
+// Helper to parse Turkish date strings like "19 Haziran 19:10" into ISO dates
+function parseTurkishDate(dateStr) {
+  if (!dateStr) return new Date().toISOString();
+  
+  const months = {
+    ocak: 0, subat: 1, mart: 2, nisan: 3, mayis: 4, haziran: 5,
+    temmuz: 6, agustos: 7, eylül: 8, ekim: 9, kasim: 10, aralik: 11,
+    ocak: 0, şubat: 1, mart: 2, nisan: 3, mayıs: 4, haziran: 5,
+    temmuz: 6, ağustos: 7, eylül: 8, ekim: 9, kasım: 10, aralık: 11
+  };
+  
+  try {
+    const cleanStr = dateStr.replace(/\s+/g, ' ').trim();
+    const parts = cleanStr.toLowerCase().split(' ');
+    if (parts.length >= 2) {
+      const day = parseInt(parts[0], 10);
+      const monthName = parts[1];
+      const month = months[monthName] !== undefined ? months[monthName] : new Date().getMonth();
+      const year = new Date().getFullYear();
+      
+      let hour = 0;
+      let minute = 0;
+      if (parts.length >= 3 && parts[2].includes(':')) {
+        const timeParts = parts[2].split(':');
+        hour = parseInt(timeParts[0], 10);
+        minute = parseInt(timeParts[1], 10);
+      }
+      
+      const parsedDate = new Date(year, month, day, hour, minute);
+      // If parsed date is in the future, it belongs to the previous year
+      if (parsedDate > new Date()) {
+        parsedDate.setFullYear(year - 1);
+      }
+      return parsedDate.toISOString();
+    }
+  } catch (e) {
+    console.error("Turkish date parsing failed:", e);
+  }
+  return new Date().toISOString();
+}
+
 // Scrape logic
 async function scrapeComplaints() {
   const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
   const apifyKey = process.env.APIFY_API_KEY;
-  const urlToScrape = "https://www.sikayetvar.com/arama/?q=Balkan+Turu";
+  const urlToScrape = "https://www.sikayetvar.com/balkan-turu"; // targeted tag page for 100% relevant complaints
 
   let htmlContent = "";
 
@@ -298,10 +339,11 @@ async function scrapeComplaints() {
   } else {
     // Attempt direct fetch
     try {
-      console.log("Attempting direct fetch fallback...");
+      console.log("Attempting direct fetch fallback to topic page...");
       const response = await fetch(urlToScrape, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+          'Accept': 'text/html'
         }
       });
       if (response.ok) {
@@ -320,45 +362,73 @@ async function scrapeComplaints() {
       const dom = new JSDOM(htmlContent);
       const document = dom.window.document;
       
-      const cards = document.querySelectorAll('article.card-direct, .complaint-card, .card');
+      // Selectors matching both search layout and topic card grid layout
+      const cards = document.querySelectorAll('div[role="group"][aria-roledescription="slide"], article, .complaint-card, .card');
       const results = [];
 
       cards.forEach((card, idx) => {
-        const titleEl = card.querySelector('.title, .card-title, h2, h3');
-        const descEl = card.querySelector('.description, .card-text, p');
-        const linkEl = card.querySelector('a');
-        const userEl = card.querySelector('.username, .user-name, .member-name, .complainant');
+        const titleLink = card.querySelector('a[href*="/"][class*="line-clamp"], a[href*="/"][class*="title"], a.after\\:absolute');
+        const userLink = card.querySelector('a[href*="/uye/"]');
+        const brandLink = card.querySelector('a[href^="/"]:not([href*="/uye/"]):not([href*="/arama"]):not([class*="line-clamp"]):not([class*="after\\:absolute"])');
+        
+        // Date selector matching the actual date element
+        const dateEl = card.querySelector('.text-zinc-500.mr-2, .text-neutral-400 span, time');
 
-        if (titleEl && descEl) {
-          const baslik = titleEl.textContent.trim();
-          const icerik = descEl.textContent.trim();
-          const parsedUrl = linkEl ? linkEl.getAttribute('href') : '';
-          const sikayet_url = parsedUrl ? (parsedUrl.startsWith('http') ? parsedUrl : `https://www.sikayetvar.com${parsedUrl}`) : `https://www.sikayetvar.com/arama/?q=Balkan+Turu`;
-          const sikayet_id = parsedUrl ? parsedUrl.split('/').pop() : `parsed-${Date.now()}-${idx}`;
-          const sikayetci_adi = userEl ? userEl.textContent.trim() : 'Anonim Kullanıcı';
+        if (titleLink) {
+          const baslik = titleLink.textContent.trim();
+          const parsedUrl = titleLink.getAttribute('href') || '';
+          
+          const urlParts = parsedUrl.split('/').filter(Boolean);
+          // Standard complaint URLs look like /jolly-tur/jolly-tur-sikayeti-1234
+          if (urlParts.length >= 2 && !parsedUrl.includes('uye') && !parsedUrl.includes('arama')) {
+            const sikayet_id = urlParts[urlParts.length - 1];
+            const sikayet_url = `https://www.sikayetvar.com${parsedUrl}`;
+            const sikayetci_adi = userLink ? userLink.textContent.trim() : 'Anonim Kullanıcı';
 
-          const hasBalkanKeywords = ALL_KEYWORDS_FLAT.some(kw => 
-            baslik.toLowerCase().includes(kw.toLowerCase()) || 
-            icerik.toLowerCase().includes(kw.toLowerCase())
-          );
+            // Get target agency name from brand link or URL parts
+            let acenta_adi = 'Belirtilmemiş';
+            if (brandLink) {
+              acenta_adi = brandLink.getAttribute('title') || brandLink.textContent.trim();
+            } else if (urlParts.length > 0) {
+              acenta_adi = urlParts[0].split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
 
-          if (hasBalkanKeywords) {
-            results.push({
-              sikayet_id,
-              tarih: new Date().toISOString(),
-              kaynak_site: "Sikayetvar",
-              baslik,
-              icerik,
-              sikayetci_adi,
-              sikayet_url,
-              durum: "Aktif"
-            });
+            // Extract date
+            let dateText = new Date().toISOString();
+            if (dateEl) {
+              const dateStr = dateEl.getAttribute('aria-label') || dateEl.textContent.trim();
+              dateText = parseTurkishDate(dateStr);
+            }
+
+            // Extract description snippet if available
+            const descEl = card.querySelector('.description, .card-text, p');
+            const icerik = descEl ? descEl.textContent.trim() : `${baslik} - Detaylar için şikayet sayfasına gidiniz.`;
+
+            const hasBalkanKeywords = ALL_KEYWORDS_FLAT.some(kw => 
+              baslik.toLowerCase().includes(kw.toLowerCase()) || 
+              icerik.toLowerCase().includes(kw.toLowerCase())
+            );
+
+            if (hasBalkanKeywords || urlToScrape.includes('balkan-turu')) {
+              // If it's already under the balkan-turu tag, it's 100% relevant!
+              results.push({
+                sikayet_id,
+                tarih: dateText,
+                kaynak_site: "Sikayetvar",
+                baslik,
+                icerik,
+                sikayetci_adi,
+                sikayet_url,
+                acenta_adi,
+                durum: "Aktif"
+              });
+            }
           }
         }
       });
 
       if (results.length > 0) {
-        console.log(`Successfully scraped and parsed ${results.length} complaints.`);
+        console.log(`Successfully scraped and parsed ${results.length} live complaints.`);
         return results;
       }
     } catch (parseErr) {

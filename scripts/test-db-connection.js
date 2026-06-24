@@ -1,7 +1,7 @@
 import pg from 'pg';
 
-// Testing via the Supabase pooler
-const connectionString = "postgresql://postgres.ordbhropgcgihlxjwgck:Ask123789*Ask@aws-0-eu-west-1.pooler.supabase.com:5432/postgres";
+// Testing via the direct connection
+const connectionString = "postgresql://postgres:Ask123789*Ask@db.ordbhropgcgihlxjwgck.supabase.co:5432/postgres";
 
 async function main() {
   console.log("Testing database connection to pooler for project ordbhropgcgihlxjwgck...");

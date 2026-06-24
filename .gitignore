@@ -26,3 +26,8 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Temporary HTML and test scripts
+balkan-turu.html
+scripts/inspect-html-structure.js
+scripts/test-parse-local.js
