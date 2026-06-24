@@ -152,6 +152,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('Hepsi');
   const [selectedSentiment, setSelectedSentiment] = useState('Hepsi');
   const [selectedAgency, setSelectedAgency] = useState('Hepsi');
+  const [selectedSource, setSelectedSource] = useState('Hepsi');
   const [realtimeConnected, setRealtimeConnected] = useState(false);
   const [errorStatus, setErrorStatus] = useState(null);
 
@@ -361,13 +362,14 @@ export default function App() {
     return Array.from(list);
   }, [complaints]);
 
-  // Filter complaints based on Tab, Search, Category, Sentiment and Agency
+  // Filter complaints based on Tab, Search, Category, Sentiment, Agency and Source
   const filteredComplaints = useMemo(() => {
     return complaints.filter(comp => {
       if (comp.durum !== activeTab) return false;
       if (selectedCategory !== 'Hepsi' && comp.ai_kategori !== selectedCategory) return false;
       if (selectedSentiment !== 'Hepsi' && comp.ai_duygu_skoru !== selectedSentiment) return false;
       if (selectedAgency !== 'Hepsi' && comp.acenta_adi !== selectedAgency) return false;
+      if (selectedSource !== 'Hepsi' && comp.kaynak_site !== selectedSource) return false;
 
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
@@ -786,9 +788,23 @@ export default function App() {
                   </select>
                 </div>
 
-                {(selectedCategory !== 'Hepsi' || selectedSentiment !== 'Hepsi' || selectedAgency !== 'Hepsi' || searchQuery !== '') && (
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">Kaynak:</span>
+                  <select
+                    value={selectedSource}
+                    onChange={(e) => setSelectedSource(e.target.value)}
+                    className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="Hepsi">Tüm Kaynaklar</option>
+                    <option value="Sikayetvar">Şikayetvar</option>
+                    <option value="Google Reviews">Google Reviews</option>
+                    <option value="Tatil Forumu">Tatil Forumu</option>
+                  </select>
+                </div>
+
+                {(selectedCategory !== 'Hepsi' || selectedSentiment !== 'Hepsi' || selectedAgency !== 'Hepsi' || selectedSource !== 'Hepsi' || searchQuery !== '') && (
                   <button
-                    onClick={() => { setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSelectedAgency('Hepsi'); setSearchQuery(''); }}
+                    onClick={() => { setSelectedCategory('Hepsi'); setSelectedSentiment('Hepsi'); setSelectedAgency('Hepsi'); setSelectedSource('Hepsi'); setSearchQuery(''); }}
                     className="text-indigo-600 hover:text-indigo-800 font-bold underline ml-auto cursor-pointer"
                   >
                     Filtreleri Temizle

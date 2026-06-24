@@ -12,16 +12,26 @@ async function main() {
   console.log("Connecting to Supabase at:", supabaseUrl);
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  console.log("Removing mock complaints (ID starts with 'sikayet-')...");
-  const { data, error } = await supabase
+  console.log("Removing mock and old simulated complaints (ID starts with 'sikayet-', 'google-', 'forum-')...");
+  const { error: err1 } = await supabase
     .from('balkan_sikayetleri')
     .delete()
     .like('sikayet_id', 'sikayet-%');
+    
+  const { error: err2 } = await supabase
+    .from('balkan_sikayetleri')
+    .delete()
+    .like('sikayet_id', 'google-%');
+    
+  const { error: err3 } = await supabase
+    .from('balkan_sikayetleri')
+    .delete()
+    .like('sikayet_id', 'forum-%');
 
-  if (error) {
-    console.error("✗ Failed to delete mock complaints:", error.message);
+  if (err1 || err2 || err3) {
+    console.error("✗ Failed to delete some mock/simulated complaints.");
   } else {
-    console.log("✓ Mock complaints successfully deleted from Supabase!");
+    console.log("✓ Mock and old simulated complaints successfully deleted from Supabase!");
   }
 }
 
