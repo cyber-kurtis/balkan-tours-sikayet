@@ -14,70 +14,6 @@ const KEYWORDS = {
 
 const ALL_KEYWORDS_FLAT = Object.values(KEYWORDS).flat();
 
-// Fallback complaints for development/demo when scraping is blocked or API keys are missing
-const MOCK_COMPLAINTS = [
-  {
-    sikayet_id: "sikayet-101",
-    tarih: new Date().toISOString(),
-    kaynak_site: "Sikayetvar",
-    baslik: "Ustour Rehber Rezaleti ve Program Kayması",
-    icerik: "Büyük Balkan Turu kapsamında Üsküp ve Saraybosna gezisi yapacaktık. Ancak rehberimiz son derece tecrübesizdi. Mostar Köprüsü'ne gitmek yerine saatlerce otobüste bekledik. Program kayması yüzünden Blagaj Tekkesi'ni hiç göremedik.",
-    sikayetci_adi: "Kaan K.",
-    sikayet_url: "https://www.sikayetvar.com/ustour/ustour-rehber-rezaleti-ve-program-kaymasi",
-    durum: "Aktif"
-  },
-  {
-    sikayet_id: "sikayet-102",
-    tarih: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Sikayetvar",
-    baslik: "Jolly Tur Kotor'da Rezil Otel Deneyimi",
-    icerik: "Budva ve Kotor turlarını içeren 12-19 Haziran Balkan Turu'na katıldık. Kalacağımız otel Kotor'da çok eski ve pisti. Klimalar çalışmıyordu, sıcak su akmıyordu. Tur rehberi hiçbir şekilde yardımcı olmadı.",
-    sikayetci_adi: "Ayşe T.",
-    sikayet_url: "https://www.sikayetvar.com/jolly-tur/jolly-tur-kotorda-rezil-otel-deneyimi",
-    durum: "Aktif"
-  },
-  {
-    sikayet_id: "sikayet-103",
-    tarih: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Forum",
-    baslik: "Tatilbudur Otobüslü Balkan Turu Ulaşım Sıkıntısı",
-    icerik: "Tatilbudur ile katıldığımız Mayıs ayındaki Otobüslü Balkan Turu ile Belgrad ve Novi Sad'a gittik. Otobüs yolda 2 kere arıza yaptı, saatlerce sınır kapılarında bekletildik. Ulaşım planlaması çok kötüydü.",
-    sikayetci_adi: "Mustafa B.",
-    sikayet_url: "https://www.tatilforum.com/tatilbudur/otobuslu-balkan-turu-ulasim-sikintisi",
-    durum: "Aktif"
-  },
-  {
-    sikayet_id: "sikayet-104",
-    tarih: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Google Reviews",
-    baslik: "Prontotour Tiran ve Prizren Gezisi - Rehber Yetersizliği",
-    icerik: "Prontotour ile Kurban Bayramı Balkan Turu'na katıldık. Arnavutluk Tiran ve Kosova Prizren rehberi ülkeyi hiç tanımıyordu. Bizi sadece anlaşmalı olduğu dükkanlara götürdü, tarihi yerleri anlatmadı.",
-    sikayetci_adi: "Zeynep Y.",
-    sikayet_url: "https://www.google.com/maps/contrib/prontotour-reviews",
-    durum: "Aktif"
-  },
-  {
-    sikayet_id: "sikayet-105",
-    tarih: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
-    kaynak_site: "Sikayetvar",
-    baslik: "Gezinomi Eski Tarihli Otel Şikayeti",
-    icerik: "Ohrid gölü kenarında otel diye bizi 5-12 Nisan tarihindeki turda çok uzak bir pansiyona yerleştirdiler. Bu balkan turu firması tam bir hayal kırıklığı.",
-    sikayetci_adi: "Mehmet A.",
-    sikayet_url: "https://www.sikayetvar.com/gezinomi/gezinomi-eski-tarihli-otel-sikayeti",
-    durum: "Arşiv"
-  },
-  {
-    sikayet_id: "sikayet-106",
-    tarih: new Date().toISOString(),
-    kaynak_site: "Sikayetvar",
-    baslik: "Gruppal Yemeklerin Kalitesizliği",
-    icerik: "Gruppal ile Saraybosna ve Belgrad gezisinde anlaşmalı restoranlarda verilen yemekler çok kötüydü. Sürekli köfte yemekten bıktık.",
-    sikayetci_adi: "Ebru G.",
-    sikayet_url: "https://www.sikayetvar.com/gruppal/gruppal-yemeklerin-kalitesizligi",
-    durum: "Aktif"
-  }
-];
-
 // Simple helper to match keywords inside text
 function findMatchingKeywords(text) {
   const matched = [];
@@ -90,32 +26,111 @@ function findMatchingKeywords(text) {
   return matched.join(", ") || "Balkan Turu";
 }
 
+// Smart helper to extract tour name from text/title
+function extractTourName(title, content) {
+  const text = (title + " " + content).toLowerCase();
+  
+  if (text.includes("büyük balkan") || text.includes("buyuk balkan")) return "Büyük Balkan Turu";
+  if (text.includes("baştan başa balkan") || text.includes("bastan basa balkan")) return "Baştan Başa Balkan Turu";
+  if (text.includes("otobüslü balkan") || text.includes("otobuslu balkan")) return "Otobüslü Balkan Turu";
+  if (text.includes("uçaklı balkan") || text.includes("ucakli balkan")) return "Uçaklı Balkan Turu";
+  if (text.includes("klasik balkan")) return "Klasik Balkan Turu";
+  if (text.includes("balkan ülkeleri") || text.includes("balkan ulkeleri")) return "Balkan Ülkeleri Turu";
+  if (text.includes("rüya balkan") || text.includes("ruya balkan")) return "Rüya Balkan Turu";
+  if (text.includes("ekspres balkan")) return "Ekspres Balkan Turu";
+  if (text.includes("mini balkan")) return "Mini Balkan Turu";
+  
+  const tourRegex = /([a-z0-9ışğüçöâıİĞÜŞÖÇ\-–\s]+)(?:turu|turları|gezisi|turuna|turuyla|programı)/gi;
+  const matches = text.match(tourRegex);
+  if (matches) {
+    for (let match of matches) {
+      let clean = match.trim()
+        .replace(/(turuna|turuyla)/i, 'Turu')
+        .replace(/turları/i, 'Turları')
+        .replace(/turu/i, 'Turu')
+        .replace(/gezisi/i, 'Gezisi')
+        .replace(/programı/i, 'Programı');
+      
+      clean = clean.replace(/\s+/g, ' ').trim();
+      const words = clean.split(' ');
+      const finalWords = words.length > 5 ? words.slice(words.length - 4) : words;
+      let finalName = finalWords.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      
+      const junk = ["Jolly", "Tatilbudur", "Pronto", "Gezinomi", "Gruppal", "Kappa", "Coral", "Touristica", "Bizim", "Sizin", "Günü", "Günlük", "Acenta", "Şikayeti", "Rezaleti", "Sorunu"];
+      if (!junk.some(j => finalName.includes(j)) && finalName.length > 3) {
+        if (!finalName.endsWith("Turu") && !finalName.endsWith("Turları") && !finalName.endsWith("Gezisi")) {
+          finalName += " Turu";
+        }
+        return finalName;
+      }
+    }
+  }
+  
+  const cities = [];
+  if (text.includes("üsküp") || text.includes("ohrid") || text.includes("makedonya")) cities.push("Makedonya");
+  if (text.includes("mostar") || text.includes("saraybosna") || text.includes("bosna")) cities.push("Bosna");
+  if (text.includes("kotor") || text.includes("budva") || text.includes("karadağ") || text.includes("montenegro")) cities.push("Karadağ");
+  if (text.includes("belgrad") || text.includes("novi sad") || text.includes("sırbistan")) cities.push("Sırbistan");
+  if (text.includes("tiran") || text.includes("arnavutluk")) cities.push("Arnavutluk");
+  if (text.includes("prizren") || text.includes("priştine") || text.includes("kosova")) cities.push("Kosova");
+  
+  if (cities.length > 0) {
+    return `${cities.slice(0, 2).join(" & ")} Turu`;
+  }
+  
+  return "Balkan Ülkeleri Turu";
+}
+
+// Smart helper to extract tour date from text/title
+function extractTourDate(title, content) {
+  const text = (title + " " + content).toLowerCase();
+  
+  const dateRegexes = [
+    /([0-9]+\s*[-–]\s*[0-9]+\s+(?:ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık))/gi,
+    /([0-9]+\s+(?:ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık)\s+[0-9]{4})/gi,
+    /([0-9]+\s+(?:ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık))/gi,
+    /(kurban\s+bayram[ıa-z]*|ramazan\s+bayram[ıa-z]*|bayram\s+tatil[ıa-z]*|bayramı|bayramında)/gi,
+    /((?:mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık|ocak|şubat|mart|nisan)\s+(?:ayı|ortası|sonu|başı|çıkışlı|dönemi))/gi,
+    /(mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık|ocak|şubat|mart|nisan)/gi
+  ];
+
+  for (const regex of dateRegexes) {
+    const match = text.match(regex);
+    if (match && match.length > 0) {
+      let foundDate = match[0].trim();
+      foundDate = foundDate.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      return foundDate;
+    }
+  }
+  return "Belirtilmemiş";
+}
+
 // Simulated AI classifier using text keywords fallback if API key is missing
 function ruleBasedClassifier(title, content, defaultAgency) {
   const text = (title + " " + content).toLowerCase();
   let ai_kategori = "Alakasız";
   let ai_duygu_skoru = "Düşük";
   let acenta_adi = defaultAgency && defaultAgency !== "Belirtilmemiş" ? defaultAgency : "Belirtilmemiş";
-  let tur_adi = "Genel Balkan Turu";
-  let tur_tarihi = "Belirtilmemiş";
+  let tur_adi = extractTourName(title, content);
+  let tur_tarihi = extractTourDate(title, content);
 
   // Category classification
-  if (text.includes("otel") || text.includes("pansiyon") || text.includes("oda") || text.includes("klima") || text.includes("temizlik")) {
+  if (text.includes("otel") || text.includes("pansiyon") || text.includes("oda") || text.includes("klima") || text.includes("temizlik") || text.includes("sıcak su") || text.includes("banyo") || text.includes("kahvaltı") || text.includes("yemek")) {
     ai_kategori = "Otel";
-  } else if (text.includes("otobüs") || text.includes("uçak") || text.includes("yol") || text.includes("ulaşım") || text.includes("arıza") || text.includes("şoför")) {
+  } else if (text.includes("otobüs") || text.includes("uçak") || text.includes("yol") || text.includes("ulaşım") || text.includes("arıza") || text.includes("şoför") || text.includes("kaptan") || text.includes("koltuk") || text.includes("sınır")) {
     ai_kategori = "Ulaşım";
-  } else if (text.includes("rehber") || text.includes("anlatım") || text.includes("ilgisiz")) {
+  } else if (text.includes("rehber") || text.includes("anlatım") || text.includes("ilgisiz") || text.includes("tavır") || text.includes("rehberlik")) {
     ai_kategori = "Rehber";
-  } else if (text.includes("program") || text.includes("zamanlama") || text.includes("kayma") || text.includes("yetişemedik") || text.includes("göremedik")) {
+  } else if (text.includes("program") || text.includes("zamanlama") || text.includes("kayma") || text.includes("yetişemedik") || text.includes("göremedik") || text.includes("iptal") || text.includes("ekstra tur") || text.includes("saatlerce bekledik")) {
     ai_kategori = "Program Kayması";
   } else if (text.includes("balkan") || text.includes("tur")) {
     ai_kategori = "Ulaşım";
   }
 
   // Sentiment classification
-  if (text.includes("rezalet") || text.includes("kötü") || text.includes("berbat") || text.includes("asla") || text.includes("tüketici hakem") || text.includes("paramı")) {
+  if (text.includes("rezalet") || text.includes("kötü") || text.includes("berbat") || text.includes("asla") || text.includes("tüketici hakem") || text.includes("paramı") || text.includes("dava") || text.includes("mağdur")) {
     ai_duygu_skoru = "Kritik";
-  } else if (text.includes("sorun") || text.includes("sıkıntı") || text.includes("şikayet") || text.includes("yetersiz")) {
+  } else if (text.includes("sorun") || text.includes("sıkıntı") || text.includes("şikayet") || text.includes("yetersiz") || text.includes("ilgisiz")) {
     ai_duygu_skoru = "Orta";
   }
 
@@ -140,34 +155,6 @@ function ruleBasedClassifier(title, content, defaultAgency) {
     }
   }
 
-  // Tour name detection
-  if (text.includes("büyük balkan")) {
-    tur_adi = "Büyük Balkan Turu";
-  } else if (text.includes("otobüslü balkan")) {
-    tur_adi = "Otobüslü Balkan Turu";
-  } else if (text.includes("uçaklı balkan")) {
-    tur_adi = "Uçaklı Balkan Turu";
-  } else if (text.includes("klasik balkan")) {
-    tur_adi = "Klasik Balkan Turu";
-  }
-
-  // Tour date detection (updated to match en-dashes '–' and spaces)
-  const dateRegexes = [
-    /([0-9]+\s*[-–]\s*[0-9]+\s+[a-zışğüçö]+)/gi,
-    /([0-9]+\s+[a-zışğüçö]+\s+[0-9]{4})/gi,
-    /([0-9]+\s+[a-zışğüçö]+)/gi,
-    /(bayram[a-zışğüçö\s]*)/gi,
-    /(mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık|ocak|şubat|mart|nisan)/gi
-  ];
-  for (const regex of dateRegexes) {
-    const match = text.match(regex);
-    if (match && match.length > 0) {
-      tur_tarihi = match[0].trim();
-      tur_tarihi = tur_tarihi.charAt(0).toUpperCase() + tur_tarihi.slice(1);
-      break;
-    }
-  }
-
   return { ai_kategori, ai_duygu_skoru, acenta_adi, tur_adi, tur_tarihi };
 }
 
@@ -185,7 +172,7 @@ Sınıflandırma Kuralları:
 1. Kategori (ai_kategori): Şu seçeneklerden birini seç: "Ulaşım", "Rehber", "Otel", "Program Kayması", "Alakasız".
 2. Duygu Skoru (ai_duygu_skoru): Şu seçeneklerden birini seç: "Kritik", "Orta", "Düşük".
 3. Hedef Acenta/Firma Adı (acenta_adi): Şikayet edilen seyahat acentasını/firmasını metinden tespit et (örn: Jolly Tur, Ustour, Tatilbudur, Prontotour, Gezinomi, Gruppal, Kappa Tur vb.). Eğer metinde herhangi bir firma adı geçmiyorsa veya bulunamıyorsa "Belirtilmemiş" yaz.
-4. Tur Adı (tur_adi): Katılım sağlanan tur ismini metinden çıkar (örn: Büyük Balkan Turu, Otobüslü Balkan Turu, Klasik Balkan Turu, 9 Günlük Balkan Turu vb.). Bulunamazsa "Genel Balkan Turu" yaz.
+4. Tur Adı (tur_adi): Katılım sağlanan tur ismini metinden çıkar (örn: Büyük Balkan Turu, Otobüslü Balkan Turu, Klasik Balkan Turu, 9 Günlük Balkan Turu vb.). Bulunamazsa metinde geçen şehir/ülkelere göre bir isim oluştur (örn: "Makedonya & Karadağ Turu") veya "Balkan Ülkeleri Turu" yaz. Kesinlikle "Genel Balkan Turu" yazma.
 5. Katıldığı Tur Tarihi (tur_tarihi): Kişinin şikayete konu olan tura katıldığı tarihi veya dönemini metinden tespit et (örn: "15-22 Haziran 2026", "Kurban Bayramı 2026", "Mayıs sonu", "Geçen hafta" vb.). Eğer metinde tur tarihi/dönemiyle ilgili hiçbir ipucu yoksa "Belirtilmemiş" yaz.
 
 Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
@@ -216,7 +203,7 @@ Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
         ai_kategori: parsed.ai_kategori || "Alakasız",
         ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta",
         acenta_adi: parsed.acenta_adi && parsed.acenta_adi !== "Belirtilmemiş" ? parsed.acenta_adi : (defaultAgency || "Belirtilmemiş"),
-        tur_adi: parsed.tur_adi || "Genel Balkan Turu",
+        tur_adi: parsed.tur_adi && parsed.tur_adi !== "Genel Balkan Turu" ? parsed.tur_adi : extractTourName(title, icerik),
         tur_tarihi: parsed.tur_tarihi || "Belirtilmemiş"
       };
     } catch (e) {
@@ -243,7 +230,7 @@ Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
         ai_kategori: parsed.ai_kategori || "Alakasız",
         ai_duygu_skoru: parsed.ai_duygu_skoru || "Orta",
         acenta_adi: parsed.acenta_adi && parsed.acenta_adi !== "Belirtilmemiş" ? parsed.acenta_adi : (defaultAgency || "Belirtilmemiş"),
-        tur_adi: parsed.tur_adi || "Genel Balkan Turu",
+        tur_adi: parsed.tur_adi && parsed.tur_adi !== "Genel Balkan Turu" ? parsed.tur_adi : extractTourName(title, icerik),
         tur_tarihi: parsed.tur_tarihi || "Belirtilmemiş"
       };
     } catch (e) {
@@ -354,7 +341,34 @@ async function scrapeComplaints() {
         throw new Error(`Direct fetch status: ${response.status}`);
       }
     } catch (err) {
-      console.warn("Direct fetch blocked or failed. Using high-quality mock data.");
+      console.warn("Direct fetch blocked or failed. Attempting local HTML file fallback...");
+      try {
+        const fs = await import('fs');
+        const path = await import('path');
+        const { fileURLToPath } = await import('url');
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const possiblePaths = [
+          path.join(__dirname, 'balkan-turu.html'),
+          path.join(__dirname, '../balkan-turu.html'),
+          path.join(__dirname, '../../balkan-turu.html'),
+          path.join(process.cwd(), 'balkan-turu.html')
+        ];
+        let loaded = false;
+        for (const p of possiblePaths) {
+          if (fs.existsSync(p)) {
+            console.log(`Loading local HTML backup from: ${p}`);
+            htmlContent = fs.readFileSync(p, 'utf16le');
+            loaded = true;
+            break;
+          }
+        }
+        if (!loaded) {
+          throw new Error("Could not find balkan-turu.html in search paths.");
+        }
+      } catch (fileErr) {
+        console.error("Local file fallback failed:", fileErr.message);
+      }
     }
   }
 
@@ -431,8 +445,9 @@ async function scrapeComplaints() {
             );
 
             if (hasBalkanKeywords || urlToScrape.includes('balkan-turu')) {
-              // If it's already under the balkan-turu tag, it's 100% relevant!
-              if (!seenIds.has(sikayet_id)) {
+              // Exclude Ustour bot comments and make sure it has a valid detail url
+              const pathParts = parsedUrl.split('/').filter(Boolean);
+              if (pathParts.length >= 2 && acenta_adi !== 'Ustour' && !baslik.toLowerCase().includes('ustour') && !seenIds.has(sikayet_id)) {
                 seenIds.add(sikayet_id);
                 results.push({
                   sikayet_id,
@@ -450,7 +465,6 @@ async function scrapeComplaints() {
           }
         }
       });
-
       if (results.length > 0) {
         console.log(`Successfully scraped and parsed ${results.length} live complaints.`);
         return results;
@@ -460,9 +474,8 @@ async function scrapeComplaints() {
     }
   }
 
-  // Return mock complaints if scraping/parsing yielded nothing
-  console.log("Returning high-quality mock complaints.");
-  return MOCK_COMPLAINTS;
+  console.log("No complaints found. Returning empty list.");
+  return [];
 }
 
 // Function to generate high-quality simulated complaints from Google Reviews and Forums
@@ -473,7 +486,7 @@ function generateGoogleAndForumComplaints(scrapedComplaints) {
   const googleTemplates = [
     {
       baslik: "Rehberin İlgisizliği ve Otobüsün Klimasının Bozuk Olması",
-      icerik: "Balkan turuna katıldık. Otobüsün kliması neredeyse hiç çalışmıyordu, sıcaktan perişan olduk. Rehber de son derece tecrübesizdi, hiçbir yeri düzgün anlatmadı.",
+      icerik: "Balkan turuna katıldık. Otobüsün kliması neredeyse hiç çalışmıyordu, sıcaktan perişan olduk. Rehber de son derece tecrüpesizdi, hiçbir yeri düzgün anlatmadı.",
       kategori: "Rehber"
     },
     {
@@ -518,50 +531,60 @@ function generateGoogleAndForumComplaints(scrapedComplaints) {
     activeAgencies.push("Jolly Tur", "Tatilbudur", "Prontotour", "Gezinomi");
   }
 
-  // Generate 8-12 Google Reviews
-  const countGoogle = Math.floor(Math.random() * 5) + 8; // 8-12
+  // Generate Google Reviews
+  const countGoogle = Math.floor(Math.random() * 5) + 8;
   for (let i = 0; i < countGoogle; i++) {
     const agency = activeAgencies[Math.floor(Math.random() * activeAgencies.length)];
     const template = googleTemplates[Math.floor(Math.random() * googleTemplates.length)];
     const name = ["Mehmet", "Elif", "Burak", "Selin", "Can", "Gamze", "Murat", "Hülya", "Gökhan", "Demet"][Math.floor(Math.random() * 10)] + " " + ["Y.", "T.", "K.", "A.", "B.", "S."][Math.floor(Math.random() * 6)];
     const date = new Date(Date.now() - Math.floor(Math.random() * 10 * 24 * 60 * 60 * 1000)).toISOString();
     
+    const titleText = `${agency} ${template.baslik}`;
+    const contentText = `${agency} ile katıldığım Balkan Turu'nda ${template.icerik.toLowerCase()}`;
+    const tur_adi = extractTourName(titleText, contentText);
+    const tur_tarihi = extractTourDate(titleText, contentText);
+
     results.push({
       sikayet_id: `google-${agency.toLowerCase().replace(/\s+/g, '-')}-${i}-${Math.floor(Math.random()*1000)}`,
       tarih: date,
       kaynak_site: "Google Reviews",
-      baslik: `${agency} ${template.baslik}`,
-      icerik: `${agency} ile katıldığım Balkan Turu'nda ${template.icerik.toLowerCase()}`,
+      baslik: titleText,
+      icerik: contentText,
       sikayetci_adi: name,
       acenta_adi: agency,
-      tur_adi: "Genel Balkan Turu",
-      tur_tarihi: "Belirtilmemiş",
-      sikayet_url: "https://www.google.com/maps",
+      tur_adi: tur_adi,
+      tur_tarihi: tur_tarihi !== "Belirtilmemiş" ? tur_tarihi : "Haziran Ortası",
+      sikayet_url: `https://www.google.com/search?q=${encodeURIComponent(agency + ' Google Yorumları')}`,
       durum: "Aktif",
       ai_kategori: template.kategori,
       ai_duygu_skoru: sentiments[Math.floor(Math.random() * sentiments.length)]
     });
   }
 
-  // Generate 5-8 Forum complaints
-  const countForum = Math.floor(Math.random() * 4) + 5; // 5-8
+  // Generate Forum complaints
+  const countForum = Math.floor(Math.random() * 4) + 5;
   for (let i = 0; i < countForum; i++) {
     const agency = activeAgencies[Math.floor(Math.random() * activeAgencies.length)];
     const template = forumTemplates[Math.floor(Math.random() * forumTemplates.length)];
     const name = ["Alper", "Merve", "Tolga", "İrem", "Onur", "Buse", "Hakan", "Pelin"][Math.floor(Math.random() * 8)];
     const date = new Date(Date.now() - Math.floor(Math.random() * 15 * 24 * 60 * 60 * 1000)).toISOString();
     
+    const titleText = `${agency} Balkan Turu Şikayeti - ${template.baslik}`;
+    const contentText = `Arkadaşlar merhaba, ${agency} ile balkan turuna çıktık. ${template.icerik}`;
+    const tur_adi = extractTourName(titleText, contentText);
+    const tur_tarihi = extractTourDate(titleText, contentText);
+
     results.push({
       sikayet_id: `forum-${agency.toLowerCase().replace(/\s+/g, '-')}-${i}-${Math.floor(Math.random()*1000)}`,
       tarih: date,
       kaynak_site: "Tatil Forumu",
-      baslik: `${agency} Balkan Turu Şikayeti - ${template.baslik}`,
-      icerik: `Arkadaşlar merhaba, ${agency} ile balkan turuna çıktık. ${template.icerik}`,
+      baslik: titleText,
+      icerik: contentText,
       sikayetci_adi: name,
       acenta_adi: agency,
-      tur_adi: "Genel Balkan Turu",
-      tur_tarihi: "Belirtilmemiş",
-      sikayet_url: "https://www.tatilforum.com",
+      tur_adi: tur_adi,
+      tur_tarihi: tur_tarihi !== "Belirtilmemiş" ? tur_tarihi : "Mayıs Sonu",
+      sikayet_url: `https://www.google.com/search?q=${encodeURIComponent(agency + ' balkan turu şikayet forum')}`,
       durum: "Aktif",
       ai_kategori: template.kategori,
       ai_duygu_skoru: sentiments[Math.floor(Math.random() * sentiments.length)]
@@ -621,9 +644,8 @@ export async function handler(event, context) {
       });
     }
 
-    // 3. Mix in Google Reviews & Forum complaints
-    const extraComplaints = generateGoogleAndForumComplaints(processed);
-    const finalComplaints = [...processed, ...extraComplaints];
+    // 3. Only keep real scraped complaints (avoiding fake/bot reviews generation)
+    const finalComplaints = processed;
 
     // 4. Upsert to Supabase if not dry run
     if (!isDryRun) {
